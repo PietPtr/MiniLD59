@@ -52,9 +52,9 @@ void Game::draw()
     //Draw the background
     Sprite background;
     background.setTexture(myTextureAtlas);
-    for (int y = 0; y < int(windowHeight / 16.0) + 1; y++)
+    for (int y = 0; y < (int)(windowHeight / 16.0) + 1; y++)
     {
-        for (int x = 0; x < int(windowWidth / 16.0) + 1; x++)
+        for (int x = 0; x < (int)(windowWidth / 16.0) + 1; x++)
         {
             background.setTextureRect(IntRect(randint(0, 7, (y + 1) * (x + 1)) * 16, 64, 16, 16));
             background.setPosition(x * 16, y * 16);

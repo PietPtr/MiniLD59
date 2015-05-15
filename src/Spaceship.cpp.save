@@ -16,35 +16,39 @@ void Spaceship::update()
     {
         int deadzone = 20;
         float extraVelocity = 0.01;
+        float velocityDevider = 1000;
 
         if (Keyboard::isKeyPressed(Keyboard::S))
             velocity.y += extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::Y) > 0 + deadzone)
-            velocity.y = (Joystick::getAxisPosition(0, Joystick::Y) / 100.0);
+            velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
         else if (velocity.y > 0)
             velocity.y /= 1.1;
 
         if (Keyboard::isKeyPressed(Keyboard::W))
-            velocity.y = -1
+            velocity.y -= extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::Y) < 0 - deadzone)
-            velocity.y = (Joystick::getAxisPosition(0, Joystick::Y) / 100.0);
+            velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
         else if (velocity.y < 0)
             velocity.y /= 1.1;
 
         if (Keyboard::isKeyPressed(Keyboard::D))
-            velocity.x = 1;
+            velocity.x += extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::X) > 0 + deadzone)
-            velocity.x = (Joystick::getAxisPosition(0, Joystick::X) / 100.0);
+            velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
         else if (velocity.x > 0)
             velocity.x /= 1.1;
 
         if (Keyboard::isKeyPressed(Keyboard::A))
-            velocity.x = -1;
+            velocity.x -= extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::X) < 0 - deadzone)
-            velocity.x = (Joystick::getAxisPosition(0, Joystick::X) / 100.0);
+            velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
         else if (velocity.x < 0)
             velocity.x /= 1.1;
     }
+    
+    //Rounding
+    velocity.x = 
 
     position.x += velocity.x * speed;
     position.y += velocity.y * speed;
@@ -56,6 +60,7 @@ void Spaceship::update()
 void Spaceship::draw(RenderWindow* window, Texture* texture)
 {
     Sprite spaceShipSprite;
+    spaceShipSprite.setOrigin(Vector2f(8, 8));
     spaceShipSprite.setTexture(*texture);
     spaceShipSprite.setPosition(position);
     spaceShipSprite.setRotation(rotation);
