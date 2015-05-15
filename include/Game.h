@@ -4,8 +4,6 @@
 
 using namespace sf;
 
-class Spaceship;
-
 class Game
 {
     public:
@@ -22,5 +20,5 @@ class Game
         int frame;
         int windowWidth;
         int windowHeight;
-        //Spaceship player;
+        Spaceship player {PLAYER, Vector2f(100, 100), 10.0f};
 };

@@ -8,8 +8,8 @@ Game::Game(RenderWindow* _window)
     window = _window;
     loadTextures();
     //myTextureAtlas.setSmooth(true);
-    //windowWidth = 1280;
-    //windowWidth = 720;
+    windowWidth = 1280;
+    windowWidth = 720;
     //player = Spaceship(Ship.PLAYER, Vector2f(windowWidth / 2, windowHeight / 2), 10);
 }
 
