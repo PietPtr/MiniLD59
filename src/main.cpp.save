@@ -1,0 +1,28 @@
+#include <SFML/Graphics.hpp>
+#include "Game.h"
+#include <iostream>
+
+using namespace sf;
+int main()
+{
+    Game game;
+
+    std::cout << game.isWindowOpen() << "\n";
+
+    int windowWidth = 1280;
+    int windowHeigth = 720;
+    RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
+    window.setVerticalSyncEnabled(true);
+
+    while (window.isOpen())
+    {
+        std::cout << game.isWindowOpen() << ".\n";
+        game.update(&wind);
+        game.draw();
+        //frame++;
+    }
+
+    std::cout << game.isWindowOpen() << "..\n";
+
+    return 0;
+}

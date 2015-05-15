@@ -1,0 +1,11 @@
+
+#include <SFML/Graphics.hpp>
+#include 
+
+class Planet : public GameObject
+{
+    public:
+        Planet();
+    protected:
+    private:
+};

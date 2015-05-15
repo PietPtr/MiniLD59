@@ -1,0 +1,14 @@
+
+enum Ship { PLAYER, CIVILIAN, ENEMY };
+
+class Spaceship
+{
+    public:
+        Spaceship();
+    protected:
+    private:
+        Ship shipCategory;
+        Vector2f position;
+        Vector2f velocity;
+        float
+};

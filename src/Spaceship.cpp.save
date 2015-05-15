@@ -1,0 +1,8 @@
+#include "Spaceship.h"
+
+Spaceship::Spaceship(Ship _category, Vector2f _position, float _speed)
+{
+    shipCategorycategory = _category;
+    position = _position;
+    speed = _speed;
+}
