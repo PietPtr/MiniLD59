@@ -14,11 +14,12 @@ class Game
         int randint(int low, int high, int seed);
     protected:
     private:
-        RenderWindow* window = nullp;
+        RenderWindow* window = nullptr;
         Texture myTextureAtlas;
         Texture someonesTextureAtlas;
-        int frame;
-        int windowWidth;
-        int windowHeight;
+        int frame = 0;
+        int windowWidth = 1280;
+        int windowHeight = 720;
         Spaceship player {PLAYER, Vector2f(100, 100), 10.0f};
+        
 };

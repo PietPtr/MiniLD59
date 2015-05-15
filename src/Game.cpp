@@ -12,6 +12,7 @@ Game::Game(RenderWindow* _window)
 
 void Game::update()
 {
+    //Events
     Event event;
     while (window->pollEvent(event))
     {
@@ -32,6 +33,10 @@ void Game::update()
             window->setView(View(visibleArea));
         }
     }
+
+    //Update objects
+    player.update();
+
     frame++;
 }
 
@@ -39,14 +44,10 @@ void Game::draw()
 {
     window->clear();
 
-    Sprite test;
-    test.setTexture(myTextureAtlas);
-    test.setPosition(Vector2f(256, 256));
-    test.setOrigin(Vector2f(64, 64));
-    //test.setRotation(frame / 1);
-    test.setScale(Vector2f(2.0, 2.0));
-    //std::cout << test.getRotation() << "\n";
-    window->draw(test);
+    //Set the view
+    View view(player.getPosition(), Vector2f(windowWidth, windowHeight));
+    window->setView(view);
+
 
     //Draw the background
     Sprite background;
@@ -61,6 +62,8 @@ void Game::draw()
         }
     }
 
+    //Draw all the objects
+    player.draw(window, &myTextureAtlas);
 
     window->display();
 }

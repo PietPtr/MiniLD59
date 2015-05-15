@@ -1,14 +1,21 @@
+#include <SFML/Graphics.hpp>
+#include "GameObject.h"
+
+using namespace sf;
 
 enum Ship { PLAYER, CIVILIAN, ENEMY };
 
-class Spaceship
+class Spaceship : public GameObject
 {
     public:
-        Spaceship();
+        Spaceship(Ship _category, Vector2f position, float speed);
+        void update();
+        void draw(RenderWindow* window, Texture* texture);
     protected:
     private:
-        Ship shipCategory;
+        Ship shipCategory = CIVILIAN;
         Vector2f position;
         Vector2f velocity;
-        float
+        float speed = 10;
+        Vector2f playerSpritePos {};
 };
