@@ -6,10 +6,7 @@ using namespace sf;
 Game::Game(RenderWindow* _window)
 {
     window = _window;
-    loadTextures();
     //myTextureAtlas.setSmooth(true);
-    windowWidth = 1280;
-    windowWidth = 720;
 }
 
 void Game::update()
@@ -57,7 +54,9 @@ void Game::draw()
     {
         for (int x = 0; x < int(windowWidth / 16.0) + 1; x++)
         {
-            background.setTextureRect(Rect(randint(0, 7)))
+            background.setTextureRect(IntRect(randint(0, 7, (y + 1) * (x + 1)) * 16, 64, 16, 16));
+            background.setPosition(x * 16, y * 16);
+            window->draw(background);
         }
     }
 
@@ -73,9 +72,9 @@ void Game::loadTextures()
         window->close();
 }
 
-int Game::randint(int low, int high)
+int Game::randint(int low, int high, int seed)
 {
+    srand(seed);
     int value = rand() % (high + 1 - low) + low;
-    srand(value * clock());
     return value;
 }
