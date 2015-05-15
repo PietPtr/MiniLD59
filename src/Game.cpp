@@ -42,7 +42,7 @@ void Game::update()
 
 void Game::draw()
 {
-    window->clear();
+    window->clear(Color(255, 255, 255));
 
     //Set the view
     View view(player.getPosition(), Vector2f(windowWidth, windowHeight));
@@ -52,23 +52,22 @@ void Game::draw()
     //Draw the background
     Sprite background;
     background.setTexture(myTextureAtlas);
-    Vector2f topLeftTile = player.getPosition() - (Vector2f(windowWidth, windowHeight) / 2.0f);
-    for (int y = 0; y < (int)(windowHeight / 16.0) + 1; y++)
-    {
-        for (int x = 0; x < (int)(windowWidth / 16.0) + 1; x++)
-        {
-            background.setTextureRect(IntRect(randint(0, 7, (y + 1) * (x + 1)) * 16, 64, 16, 16));
-            background.setPosition(x * 16, y * 16);
-            //window->draw(background);
-        }
-    }
+    Vector2f topLeftTile;// = player.getPosition() - (Vector2f(windowWidth, windowHeight) / 2.0f);
 
-    for (int y = (int)topLeftTile.y - (int)topLeftTile.y % 16; y < (int)(windowHeight / 16.0) + 1; y++)
+    topLeftTile.x = (int)(player.getPosition().x - windowWidth / 2.0f);
+    topLeftTile.x = topLeftTile.x - (int)topLeftTile.x % 16 - 16;
+
+    topLeftTile.y = (int)(player.getPosition().y - windowHeight / 2.0f);
+    topLeftTile.y = topLeftTile.y - (int)topLeftTile.y % 16 - 16;
+
+    //std::cout << topLeftTile.x << "   " << topLeftTile.y << "\n";
+
+    for (int y = 0; y < (int)(windowHeight / 16.0) + 2; y++)
     {
-        for (int x = (int)(topLeftTile.x - (int)topLeftTile.y % 16); x < (int)(windowWidth / 16.0) + 1; y++)
+        for (int x = 0; x < (int)(windowWidth / 16.0) + 2; x++)
         {
-            background.setTextureRect(IntRect(randint(0, 7, (y + 1) * (x + 1)) * 16, 64, 16, 16));
-            background.setPosition(x * 16, y * 16);
+            background.setTextureRect(IntRect(randint(0, 7, (y + 1 + topLeftTile.y / 16) * (x + 1 + topLeftTile.x / 16)) * 16, 64, 16, 16));
+            background.setPosition(x * 16 + topLeftTile.x, y * 16 + topLeftTile.y);
             window->draw(background);
         }
     }

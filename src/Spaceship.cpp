@@ -2,6 +2,8 @@
 #include <math.h>
 #include <iostream>
 
+void celShade(Sprite sprite, RenderWindow* window);
+
 Spaceship::Spaceship(Ship _category, Vector2f _position, float _speed)
 {
     shipCategory = _category;
@@ -51,6 +53,14 @@ void Spaceship::update()
     velocity.x = roundf(velocity.x * 1000) / 1000;
     velocity.y = roundf(velocity.y * 1000) / 1000;
 
+    //Capping
+    int maxSpeed = 7;
+
+    velocity.x = velocity.x > maxSpeed ? maxSpeed : velocity.x;
+    velocity.x = velocity.x <-maxSpeed ?-maxSpeed : velocity.x;
+    velocity.y = velocity.y > maxSpeed ? maxSpeed : velocity.y;
+    velocity.y = velocity.y <-maxSpeed ?-maxSpeed : velocity.y;
+
     position.x += velocity.x * speed;
     position.y += velocity.y * speed;
 
@@ -79,5 +89,6 @@ void Spaceship::draw(RenderWindow* window, Texture* texture)
         break;
     }
 
+    celShade(spaceShipSprite, window);
     window->draw(spaceShipSprite);
 }

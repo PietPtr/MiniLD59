@@ -2,6 +2,8 @@
 #include <math.h>
 #include <iostream>
 
+void celShade(Sprite sprite, RenderWindow* window);
+
 Spaceship::Spaceship(Ship _category, Vector2f _position, float _speed)
 {
     shipCategory = _category;
@@ -15,7 +17,7 @@ void Spaceship::update()
     if (shipCategory == PLAYER)
     {
         int deadzone = 20;
-        float extraVelocity = 0.01;
+        float extraVelocity = 0.05;
         float velocityDevider = 1000;
 
         if (Keyboard::isKeyPressed(Keyboard::S))
@@ -46,15 +48,24 @@ void Spaceship::update()
         else if (velocity.x < 0)
             velocity.x /= 1.1;
     }
-    
+
     //Rounding
-    velocity.x = 
+    velocity.x = roundf(velocity.x * 1000) / 1000;
+    velocity.y = roundf(velocity.y * 1000) / 1000;
+
+    //Capping
+    int maxSpeed = 7;
+
+    velocity.x = velocity.x > maxSpeed ? maxSpeed : velocity.x;
+    velocity.x = velocity.x <-maxSpeed ?-maxSpeed : velocity.x;
+    velocity.y = velocity.y > maxSpeed ? maxSpeed : velocity.y;
+    velocity.y = velocity.y <-maxSpeed ?-maxSpeed : velocity.y;
 
     position.x += velocity.x * speed;
     position.y += velocity.y * speed;
 
     rotation = (atan2(velocity.y, velocity.x) * 180 / 3.141592653) - 90;
-    //std::cout << velocity.x << " <- X      " << velocity.y << " <- Y\n";
+    std::cout << velocity.x << " <- X      " << velocity.y << " <- Y\n";
 }
 
 void Spaceship::draw(RenderWindow* window, Texture* texture)
@@ -77,6 +88,7 @@ void Spaceship::draw(RenderWindow* window, Texture* texture)
         spaceShipSprite.setTextureRect(enemySpriteRect);
         break;
     }
+    
 
     window->draw(spaceShipSprite);
 }

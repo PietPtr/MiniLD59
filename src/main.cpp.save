@@ -5,24 +5,32 @@
 using namespace sf;
 int main()
 {
-    Game game;
-
-    std::cout << game.isWindowOpen() << "\n";
-
     int windowWidth = 1280;
     int windowHeigth = 720;
     RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
     window.setVerticalSyncEnabled(true);
 
+    Game game(&window);
+
     while (window.isOpen())
     {
-        std::cout << game.isWindowOpen() << ".\n";
-        game.update(&wind);
+        game.update();
         game.draw();
-        //frame++;
     }
 
-    std::cout << game.isWindowOpen() << "..\n";
-
     return 0;
+}
+
+void celShade(Sprite sprite, RenderWindow* Window)
+{
+    sprite.setColor(Color(0, 0, 0)); //black
+    Vector2f spritePos = sprite.getPosition();
+    sprite.setPosition(Vector2f(spritePos.x - 1, spritePos.y));
+    window->draw(sprite);
+    sprite.setPosition(Vector2f(spritePos.x + 1, spritePos.y));
+    window->draw(sprite);
+    sprite.setPosition(Vector2f(spritePos.x, spritePos.y - 1));
+    window->draw(sprite);
+    sprite.setPosition(Vector2f(spritePos.x, spritePos.y + 1));
+    window
 }
