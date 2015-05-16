@@ -3,14 +3,19 @@
 #include <iostream>
 
 using namespace sf;
+
+
+RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
+
+Game game(&window);
+
 int main()
 {
-    int windowWidth = 1280;
-    int windowHeigth = 720;
-    RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
-    window.setVerticalSyncEnabled(true);
-
-    Game game(&window);
+    srand(time(NULL));
+int windowWidth = 1280;
+int windowHeigth = 720;
+    
+window.setVerticalSyncEnabled(true);
 
     while (window.isOpen())
     {
@@ -21,9 +26,9 @@ int main()
     return 0;
 }
 
-void celShade(Sprite sprite, RenderWindow* Window)
+void celShade(Sprite sprite, RenderWindow* window, Color shadeColor)
 {
-    sprite.setColor(Color(0, 0, 0)); //black
+    sprite.setColor(shadeColor);
     Vector2f spritePos = sprite.getPosition();
     sprite.setPosition(Vector2f(spritePos.x - 1, spritePos.y));
     window->draw(sprite);
@@ -32,5 +37,20 @@ void celShade(Sprite sprite, RenderWindow* Window)
     sprite.setPosition(Vector2f(spritePos.x, spritePos.y - 1));
     window->draw(sprite);
     sprite.setPosition(Vector2f(spritePos.x, spritePos.y + 1));
-    window
+    window->draw(sprite);
+}
+
+int randint(int low, int high, int seed)
+{
+    srand(seed);
+    int value = rand() % (high + 1 - low) + low;
+    return value;
+}
+
+int randint(int low, int high)
+{
+    int value = rand() % (high + 1 - low) + low;
+    srand(game.getTime().asMilliseconds);
+
+    return value;
 }

@@ -8,20 +8,20 @@ using namespace sf;
 
 enum PlanetName
 {
-    SATURN,
-    JUPITER,
-    EARTH,
+    MERCURIUS,
     VENUS,
-    PLUTO,
-    NEPTUNE,
+    EARTH,
     MARS,
-    MERCURIUS
+    PLUTO,
+    JUPITER,
+    SATURN,
+    NEPTUNE
 };
 
 class Planet : public GameObject
 {
     public:
-        Planet(int _mass, Vector2f _position);
+        Planet(int _mass, float _radius, PlanetName _planetName, int _pullFactor, int _pushFactor);
         void draw(RenderWindow* window, Texture* texture);
         void update(Time dt);
         void setPosition(Vector2f value) { position = value; }
@@ -35,13 +35,17 @@ class Planet : public GameObject
         int pullFactor = 0;
         int pushFactor = 0;
 
-        Vector2f spritePositions[8] = {Vector2f(80, 32), Vector2f(80, 48), Vector2f(80, 64),
-                                       Vector2f(80, 80), Vector2f(80, 96), Vector2f(96, 32),
-                                       Vector2f(96, 48), Vector2f(96, 64)};
+        float radius = 0;
 
-        Vector2f spritePositions[8] = {Vector2f(32, 80), Vector2f(48, 80), Vector2f(64, 80),
-                                       Vector2f(80, 80), Vector2f(96, 80), Vector2f(32, 32),
-                                       Vector2f(96, 48), Vector2f(96, 64)};
+        Vector2f spritePositions[8] =  {
+            Vector2f(32, 80), //Saturn
+                                        Vector2f(48, 80), //Jupiter
+                                        Vector2f(64, 80), //Earth
+                                        Vector2f(80, 80), //Venus
+                                        Vector2f(96, 80), //Pluto
+                                        Vector2f(32, 96), //Neptune
+                                        Vector2f(48, 96), //Mars
+                                        
 };
 
 

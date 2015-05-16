@@ -5,6 +5,8 @@
 using namespace sf;
 int main()
 {
+    srand(time(NULL));
+
     int windowWidth = 1280;
     int windowHeigth = 720;
     RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
@@ -33,4 +35,19 @@ void celShade(Sprite sprite, RenderWindow* window, Color shadeColor)
     window->draw(sprite);
     sprite.setPosition(Vector2f(spritePos.x, spritePos.y + 1));
     window->draw(sprite);
+}
+
+int randint(int low, int high, int seed)
+{
+    srand(seed);
+    int value = rand() % (high + 1 - low) + low;
+    return value;
+}
+
+int randint(int low, int high)
+{
+    int value = rand() % (high + 1 - low) + low;
+    srand(time(NULL) * value * rand());
+
+    return value;
 }

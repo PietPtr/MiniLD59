@@ -5,14 +5,18 @@ using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
 
-Planet::Planet(int _mass, Vector2f position)
+Planet::Planet(int _circulationSpeed, float _radius, PlanetName _planetName, int _pullFactor, int _pushFactor)
 {
-    mass = _mass;
+    circulationSpeed = _circulationSpeed;
+    radius = _radius;
+    planetName = _planetName;
+    pullFactor = _pullFactor;
+    pushFactor = _pushFactor;
 }
 
 void Planet::update(Time dt)
 {
-
+    circulationPosition += sp
 }
 
 void Planet::draw(RenderWindow* window, Texture* texture)
@@ -20,13 +24,14 @@ void Planet::draw(RenderWindow* window, Texture* texture)
     Sprite planetSprite;
     planetSprite.setTexture(*texture);
     planetSprite.setPosition(position);
-    std::cout <<  << "\n";
-    Vector2f spritePos;// = Vector2f(spritePositions[(int)planetName].x, spritePositions[(int)planetName].y);
-    spritePos.x = spritePositions[(int)planetName].x
-    spritePos.y = spritePositions[(int)planetName].y;
-    //planetSprite.setTextureRect(IntRect(spritePos, Vector2f(16, 16)));
 
-    //celShade(planetSprite, window, Color(0, 0, 0));
-    //window->draw(planetSprite);
+    Vector2f spritePos;// = Vector2f(spritePositions[(int)planetName].x, spritePositions[(int)planetName].y);
+    spritePos.x = spritePositions[(int)planetName].x;
+    spritePos.y = spritePositions[(int)planetName].y;
+
+    planetSprite.setTextureRect(IntRect(spritePos.x, spritePos.y, 16, 16));
+
+    celShade(planetSprite, window, Color(0, 0, 0));
+    window->draw(planetSprite);
 }
 

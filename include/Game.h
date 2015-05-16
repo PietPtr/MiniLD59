@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Spaceship.h"
 #include "Planet.h"
+#include "SolarSystem.h"
 
 using namespace sf;
 
@@ -12,7 +13,7 @@ class Game
         void update();
         void draw();
         void loadTextures();
-        int randint(int low, int high, int seed);
+        Time getTotalTime() { return totalTime; };
     protected:
     private:
         RenderWindow* window = nullptr;
@@ -24,6 +25,9 @@ class Game
         Spaceship player {PLAYER, Vector2f(0, 0), 400.0f};
         Clock clock;
         Time dt;
+        Time totalTime;
 
-        Planet testPlanet {100, Vector2f(0, 0)};
+        //Planet testPlanet {100, 100.0f, SATURN, 1, 1};
+        //SolarSystem testSystem {Vector2f(0, 0)};
+        std::vector <SolarSystem> systems;
 };

@@ -4,12 +4,18 @@
 using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
+int randint(int low, int high, int seed);
 
 Game::Game(RenderWindow* _window)
 {
     window = _window;
     loadTextures();
     //myTextureAtlas.setSmooth(true);
+
+    for (int i = 0; i < 10; i++)
+    {
+        systems.push_back(SolarSystem(Vector2f(randint(-1000, 1000), randint(-1000, 1000))));
+    }
 }
 
 void Game::update()
@@ -38,10 +44,14 @@ void Game::update()
 
     //Time
     dt = clock.restart();
-    std::cout << dt.asSeconds() << "\n";
 
     //Update objects
     player.update(dt);
+    //testSystem.update(dt);
+    for (int i = 0; i < systems.size(); i++)
+    {
+        systems.at(i).update(dt);
+    }
 
     frame++;
 }
@@ -56,6 +66,16 @@ void Game::draw()
     roundedPosition.y = (int)player.getPosition().y;
 
     View view(roundedPosition, Vector2f(windowWidth, windowHeight));
+
+    if (Joystick::isButtonPressed(0, 0))
+    {
+        view.zoom(0.25);
+    }
+    if (Joystick::isButtonPressed(0, 1))
+    {
+        view.zoom(0.125);
+    }
+
     window->setView(view);
 
 
@@ -74,15 +94,20 @@ void Game::draw()
     {
         for (int x = 0; x < (int)(windowWidth / 16.0) + 2; x++)
         {
-            background.setTextureRect(IntRect(randint(0, 7, (y + 1 + topLeftTile.y / 16) * (x + 1 + topLeftTile.x / 16)) * 16, 112, 16, 16));
+            background.setTextureRect(IntRect(randint(0, 7, (y + 420 + topLeftTile.y / 16) * (x + 420 + topLeftTile.x / 16)) * 16, 64, 16, 16));
             background.setPosition(x * 16 + topLeftTile.x, y * 16 + topLeftTile.y);
-            celShade(background, window, Color(25, 0, 0));
             window->draw(background);
         }
     }
 
     //Draw all the objects
+    //testSystem.draw(window, &myTextureAtlas);
+    for (int i = 0; i < systems.size(); i++)
+    {
+        systems.at(i).update(dt);
+    }
     player.draw(window, &myTextureAtlas);
+    //testPlanet.draw(window, &myTextureAtlas);
 
     window->display();
 }
@@ -95,9 +120,3 @@ void Game::loadTextures()
         window->close();
 }
 
-int Game::randint(int low, int high, int seed)
-{
-    srand(seed);
-    int value = rand() % (high + 1 - low) + low;
-    return value;
-}

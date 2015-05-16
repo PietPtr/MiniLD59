@@ -1,0 +1,27 @@
+#ifndef SOLARSYSTEM_H
+#define SOLARSYSTEM_H
+#include "Planet.h"
+#include <SFML/Graphics.hpp>
+#include <vector>
+
+using namespace sf;
+
+enum StarType
+{
+    SUNLIKE,
+    REDDWARF
+};
+
+class SolarSystem
+{
+    public:
+        SolarSystem();
+    protected:
+    private:
+        std::vector<Planet> planets;
+        Vector2f position;
+        StarType starType = 
+
+};
+
+#endif // SOLARSYSTEM_H
