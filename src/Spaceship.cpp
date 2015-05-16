@@ -50,8 +50,8 @@ void Spaceship::update()
     }
 
     //Rounding
-    velocity.x = roundf(velocity.x * 1000) / 1000;
-    velocity.y = roundf(velocity.y * 1000) / 1000;
+    //velocity.x = roundf(velocity.x * 1000) / 1000;
+    //velocity.y = roundf(velocity.y * 1000) / 1000;
 
     //Capping
     int maxSpeed = 7;

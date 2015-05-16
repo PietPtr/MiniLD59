@@ -45,7 +45,11 @@ void Game::draw()
     window->clear(Color(255, 255, 255));
 
     //Set the view
-    View view(player.getPosition(), Vector2f(windowWidth, windowHeight));
+    Vector2f roundedPosition;
+    roundedPosition.x = (int)player.getPosition().x;
+    roundedPosition.y = (int)player.getPosition().y;
+
+    View view(roundedPosition, Vector2f(windowWidth, windowHeight));
     window->setView(view);
 
 
