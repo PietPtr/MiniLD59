@@ -12,9 +12,9 @@ Game::Game(RenderWindow* _window)
     loadTextures();
     //myTextureAtlas.setSmooth(true);
 
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 100; i++)
     {
-        int area = 25000;
+        int area = 2500;
         systems.push_back(SolarSystem(Vector2f(randint(-area, area) + 3, randint(-area, area) + 3)));
     }
 }
@@ -47,6 +47,20 @@ void Game::update()
     dt = clock.restart();
     totalTime += dt;
 
+    /*Vector2f topLeftVisible(view.getCenter().x - windowWidth / 2 - 0, view.getCenter().y - windowHeight - 0);
+    Vector2f bottomRightVisible(view.getCenter().x + windowWidth / 2 + 0, view.getCenter().y + windowHeight + 0);
+
+    for (int i = 0; i < systems.size(); i++)
+    {
+        Vector2f systemPos = systems.at(i).getPosition();
+        if ((systemPos.x > topLeftVisible.x && systemPos.y > topLeftVisible.y) || (systemPos.x < bottomRightVisible.x && systemPos.y < bottomRightVisible.y))
+        {
+            //std::cout << "not visible" << frame << "\n";
+        }
+        //std::cout << systemPos.x << " " << systemPos.y << "\n";
+
+    }*/
+
     //Update objects
     player.update(dt);
     //testSystem.update(dt);
@@ -67,13 +81,14 @@ void Game::draw()
     roundedPosition.x = (int)player.getPosition().x;
     roundedPosition.y = (int)player.getPosition().y;
 
-    View view(roundedPosition, Vector2f(windowWidth, windowHeight));
+    view.setCenter(roundedPosition);
+    view.setSize(windowWidth, windowHeight);
 
-    if (Joystick::isButtonPressed(0, 0))
+    if (Joystick::isButtonPressed(0, 0) || Keyboard::isKeyPressed(Keyboard::Comma))
     {
         view.zoom(0.25);
     }
-    if (Joystick::isButtonPressed(0, 1))
+    if (Joystick::isButtonPressed(0, 1) || Keyboard::isKeyPressed(Keyboard::Period))
     {
         view.zoom(0.125);
     }

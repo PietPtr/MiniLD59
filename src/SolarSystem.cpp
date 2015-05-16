@@ -24,6 +24,8 @@ void SolarSystem::update(Time dt)
     {
         planets.at(i).update(dt);
     }
+
+    asteroidRotation += asteroidSpeed * dt.asSeconds();
 }
 
 void SolarSystem::draw(RenderWindow* window, Texture* texture)
@@ -31,6 +33,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
     Sprite starSprite;
     starSprite.setTexture(*texture);
 
+    //Star
     if (starType == REDDWARF)
     {
         starSprite.setTextureRect(IntRect(80, 96, 16, 16));
@@ -44,6 +47,10 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
         starSprite.setPosition(position);
     }
 
+    celShade(starSprite, window, Color(255, 255, 255));
+    window->draw(starSprite);
+
+    //planets
     for (int i = 0; i < planets.size(); i++)
     {
         Vector2f planetPos;
@@ -57,8 +64,28 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
         planets.at(i).draw(window, texture);
     }
 
-    celShade(starSprite, window, Color(0, 0, 0));
-    window->draw(starSprite);
+    //Asteroids
+    if (asteroidBelt > 0)
+    {
+        for (int i = 0; i < asteroidBelt; i++)
+        {
+            Sprite asteroidSprite;
+            asteroidSprite.setTexture(*texture);
+            asteroidSprite.setTextureRect(IntRect(randint(0, 7, i) * 16, 112, 32, 32));
+
+            float angle = asteroidRotation + (i);
+            float radius = asteroidBelt + randint(20, 60, i);
+            Vector2f asteroidPos;
+            asteroidPos.x = (cos((float)angle)) * (float)radius;
+            asteroidPos.y = (sin((float)angle)) * (float)radius;
+
+            asteroidSprite.setOrigin(Vector2f(8, 8));
+            asteroidSprite.setPosition(asteroidPos + position);
+
+            celShade(asteroidSprite, window, Color(0, 0, 0));
+            window->draw(asteroidSprite);
+        }
+    }
 }
 
 void SolarSystem::generateSystem()
@@ -74,31 +101,28 @@ void SolarSystem::generateSystem()
 
     if (starType == REDDWARF)
     {
-        generateNear(genSeed);
+        generateNear(genSeed, 2, 8);
 
-        if (randint(0, 3, genSeed) != 1) //75% percent change on asteroid belt
-            asteroidBelt = planets.back().getRadius() + randint(15, 50, genSeed);
-
-        //std::cout << "Red dwarf system, " << amountOfNearPlanets << " near planets.\n";
+        std::cout << "Red dwarf system, " << planets.size() << " planets.\n";
     }
     else if (starType == SUNLIKE)
     {
-        generateNear(genSeed);
+        generateNear(genSeed, 1, 5);
         generateGas(genSeed);
 
-        if (randint(0, 3, genSeed) == 1) //25% percent change on asteroid belt
+        if (randint(0, 3, genSeed) != 1) //25% percent change on asteroid belt
             asteroidBelt = planets.back().getRadius() + randint(50, 100), genSeed;
 
-        //std::cout << "Sunlike system, " << amountOfNearPlanets << " near planets, " << amountOfGasPlanets << " gas planets.\n";
+        std::cout << "Sunlike system, " << planets.size() << " planets, asteroid ring at " << asteroidBelt << " KM\n";
     }
 }
 
-void SolarSystem::generateNear(int genSeed)
+void SolarSystem::generateNear(int genSeed, int minPlanets, int maxPlanets)
 {
-    int amountOfNearPlanets = randint(2, 4, genSeed*3);
+    int amountOfNearPlanets = randint(minPlanets, maxPlanets, genSeed*3);
     for (int i = 1; i <= amountOfNearPlanets; i++)
     {
-        planets.push_back(Planet(randint(2500, 8000, genSeed*i*4) / 5000.0f, i * randint(15, 95, genSeed*i*5), (PlanetName)(randint(0, 4, genSeed*i*7)), 1, 1));
+        planets.push_back(Planet(randint(2500, 8000, genSeed*i*4) / 5000.0f, i * randint(19, 25, genSeed*i*5), (PlanetName)(randint(0, 4, genSeed*i*7)), 1, 1));
     }
 
 }

@@ -26,6 +26,7 @@ class Game
         Clock clock;
         Time dt;
         Time totalTime;
+        View view;
 
         //Planet testPlanet {100, 100.0f, SATURN, 1, 1};
         //SolarSystem testSystem {Vector2f(0, 0)};

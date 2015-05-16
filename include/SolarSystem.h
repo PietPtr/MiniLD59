@@ -19,14 +19,18 @@ class SolarSystem
         void update(Time dt);
         void draw(RenderWindow* window, Texture* texture);
         void generateSystem();
-        void generateNear(int genSeed);
+        void generateNear(int genSeed, int minPlanets, int maxPlanets);
         void generateGas(int genSeed);
+        Vector2f getPosition() { return position; }
     protected:
     private:
         std::vector<Planet> planets;
-        int asteroidBelt = 0;               //0: no belt, > 0: radius of asteroid belt
         Vector2f position;
         StarType starType = (StarType)0;
+
+        int asteroidBelt = 0;               //0: no belt, > 0: radius of asteroid belt
+        float asteroidRotation = 0.1;
+        float asteroidSpeed = 0.5;
 
 };
 

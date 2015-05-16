@@ -21,40 +21,56 @@ void Spaceship::update(Time dt)
         float velocityDevider = 1000;
         float slowDown = 2;
 
-        if (Keyboard::isKeyPressed(Keyboard::S))
-            velocity.y += extraVelocity;
-        else if (Joystick::getAxisPosition(0, Joystick::Y) > 0 + deadzone)
-            velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
-        else if (velocity.y > 0)
-            velocity.y -= extraVelocity * slowDown;
+        if (usesController)
+        {
+            if (Joystick::getAxisPosition(0, Joystick::Y) > 0 + deadzone)
+                velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
+            else if (velocity.y > 0)
+                velocity.y -= extraVelocity * slowDown;
 
-        if (Keyboard::isKeyPressed(Keyboard::W))
-            velocity.y -= extraVelocity;
-        else if (Joystick::getAxisPosition(0, Joystick::Y) < 0 - deadzone)
-            velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
-        else if (velocity.y < 0)
-            velocity.y += extraVelocity * slowDown;
+            if (Joystick::getAxisPosition(0, Joystick::Y) < 0 - deadzone)
+                velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
+            else if (velocity.y < 0)
+                velocity.y += extraVelocity * slowDown;
 
-        if (Keyboard::isKeyPressed(Keyboard::D))
-            velocity.x += extraVelocity;
-        else if (Joystick::getAxisPosition(0, Joystick::X) > 0 + deadzone)
-            velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
-        else if (velocity.x > 0)
-            velocity.x -= extraVelocity * slowDown;
+            if (Joystick::getAxisPosition(0, Joystick::X) > 0 + deadzone)
+                velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
+            else if (velocity.x > 0)
+                velocity.x -= extraVelocity * slowDown;
 
-        if (Keyboard::isKeyPressed(Keyboard::A))
-            velocity.x -= extraVelocity;
-        else if (Joystick::getAxisPosition(0, Joystick::X) < 0 - deadzone)
-            velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
-        else if (velocity.x < 0)
-            velocity.x += extraVelocity * slowDown;
+            if (Joystick::getAxisPosition(0, Joystick::X) < 0 - deadzone)
+                velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
+            else if (velocity.x < 0)
+                velocity.x += extraVelocity * slowDown;
+        }
+        else
+        {
+            if (Keyboard::isKeyPressed(Keyboard::S))
+                velocity.y += extraVelocity;
+            else if (velocity.y > 0)
+                velocity.y -= extraVelocity * slowDown;
+
+            if (Keyboard::isKeyPressed(Keyboard::W))
+                velocity.y -= extraVelocity;
+            else if (velocity.y < 0)
+                velocity.y += extraVelocity * slowDown;
+
+            if (Keyboard::isKeyPressed(Keyboard::D))
+                velocity.x += extraVelocity;
+            else if (velocity.x > 0)
+                velocity.x -= extraVelocity * slowDown;
+
+            if (Keyboard::isKeyPressed(Keyboard::A))
+                velocity.x -= extraVelocity;
+            else if (velocity.x < 0)
+                velocity.x += extraVelocity * slowDown;
+        }
     }
     ///*
-    if (fabs(velocity.x) < 0.04)
-        velocity.x = 0;
-    if (fabs(velocity.y) < 0.04)
+    if (!Keyboard::isKeyPressed(Keyboard::W) && !Keyboard::isKeyPressed(Keyboard::S) && fabs(velocity.y) < 0.1)
         velocity.y = 0;
-    //*/
+    if (!Keyboard::isKeyPressed(Keyboard::A) && !Keyboard::isKeyPressed(Keyboard::D) && fabs(velocity.x) < 0.1)
+        velocity.x = 0;
 
     //Capping
     int maxSpeed = 4;

@@ -26,6 +26,7 @@ class Spaceship : public GameObject
         IntRect playerSpriteRect {0, 0, 16, 16};
         IntRect civilianSpriteRect {0, 16, 16, 16};
         IntRect enemySpriteRect {0, 32, 16, 16};
+        bool usesController = Joystick::isConnected(0);
 };
 
 #endif // SPACESHIP_H
