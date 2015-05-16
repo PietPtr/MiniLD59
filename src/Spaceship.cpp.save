@@ -25,14 +25,14 @@ void Spaceship::update()
         else if (Joystick::getAxisPosition(0, Joystick::Y) > 0 + deadzone)
             velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
         else if (velocity.y > 0)
-            velocity.y /= 1.1;
+            velocity.y -= extraVelocity;
 
         if (Keyboard::isKeyPressed(Keyboard::W))
             velocity.y -= extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::Y) < 0 - deadzone)
             velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
         else if (velocity.y < 0)
-            velocity.y += e
+            velocity.y += extraVelocity;
 
         if (Keyboard::isKeyPressed(Keyboard::D))
             velocity.x += extraVelocity;
@@ -49,9 +49,10 @@ void Spaceship::update()
             velocity.x += extraVelocity;
     }
 
-    //Rounding
-    velocity.x = roundf(velocity.x * 1000) / 1000;
-    velocity.y = roundf(velocity.y * 1000) / 1000;
+    if (abs(velocity.x) < 0.01)
+        //velocity.x = 0;
+    if (abs(velocity.y) < 0.01)
+        //velocity.y = 0;
 
     //Capping
     int maxSpeed = 7;
@@ -65,7 +66,7 @@ void Spaceship::update()
     position.y += velocity.y * speed;
 
     rotation = (atan2(velocity.y, velocity.x) * 180 / 3.141592653) - 90;
-    std::cout << velocity.x << " <- X      " << velocity.y << " <- Y\n";
+    std::cout << bas(velocity.x << " <- X      " << velocity.y << " <- Y\n";
 }
 
 void Spaceship::draw(RenderWindow* window, Texture* texture)

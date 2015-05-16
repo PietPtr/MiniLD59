@@ -20,14 +20,13 @@ void Planet::draw(RenderWindow* window, Texture* texture)
     Sprite planetSprite;
     planetSprite.setTexture(*texture);
     planetSprite.setPosition(position);
-
+    std::cout <<  << "\n";
     Vector2f spritePos;// = Vector2f(spritePositions[(int)planetName].x, spritePositions[(int)planetName].y);
-    spritePos.x = spritePositions[(int)planetName].x;
+    spritePos.x = spritePositions[(int)planetName].x
     spritePos.y = spritePositions[(int)planetName].y;
+    //planetSprite.setTextureRect(IntRect(spritePos, Vector2f(16, 16)));
 
-    planetSprite.setTextureRect(IntRect(spritePos.x, spritePos.y, 16, 16));
-
-    celShade(planetSprite, window, Color(0, 0, 0));
-    window->draw(planetSprite);
+    //celShade(planetSprite, window, Color(0, 0, 0));
+    //window->draw(planetSprite);
 }
 

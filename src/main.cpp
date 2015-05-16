@@ -21,9 +21,9 @@ int main()
     return 0;
 }
 
-void celShade(Sprite sprite, RenderWindow* window)
+void celShade(Sprite sprite, RenderWindow* window, Color shadeColor)
 {
-    sprite.setColor(Color(0, 0, 0)); //black
+    sprite.setColor(shadeColor);
     Vector2f spritePos = sprite.getPosition();
     sprite.setPosition(Vector2f(spritePos.x - 1, spritePos.y));
     window->draw(sprite);

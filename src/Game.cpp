@@ -3,6 +3,8 @@
 
 using namespace sf;
 
+void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
+
 Game::Game(RenderWindow* _window)
 {
     window = _window;
@@ -34,8 +36,11 @@ void Game::update()
         }
     }
 
+    //Time
+    dt = clock.restart();
+
     //Update objects
-    player.update();
+    player.update(dt);
 
     frame++;
 }
@@ -64,8 +69,6 @@ void Game::draw()
     topLeftTile.y = (int)(player.getPosition().y - windowHeight / 2.0f);
     topLeftTile.y = topLeftTile.y - (int)topLeftTile.y % 16 - 16;
 
-    //std::cout << topLeftTile.x << "   " << topLeftTile.y << "\n";
-
     for (int y = 0; y < (int)(windowHeight / 16.0) + 2; y++)
     {
         for (int x = 0; x < (int)(windowWidth / 16.0) + 2; x++)
@@ -78,6 +81,7 @@ void Game::draw()
 
     //Draw all the objects
     player.draw(window, &myTextureAtlas);
+    testPlanet.draw(window, &myTextureAtlas);
 
     window->display();
 }

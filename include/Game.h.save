@@ -20,6 +20,9 @@ class Game
         int frame = 0;
         int windowWidth = 1280;
         int windowHeight = 720;
-        Spaceship player {PLAYER, Vector2f(100, 100), 10.0f};
+        Spaceship player {PLAYER, Vector2f(65536, 65536), 400.0f};
+        Clock clock;
+        Time dt;
         
+        Planet testPlanet()
 };

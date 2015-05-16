@@ -2,7 +2,7 @@
 #include <math.h>
 #include <iostream>
 
-void celShade(Sprite sprite, RenderWindow* window);
+void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
 
 Spaceship::Spaceship(Ship _category, Vector2f _position, float _speed)
 {
@@ -11,7 +11,7 @@ Spaceship::Spaceship(Ship _category, Vector2f _position, float _speed)
     speed = _speed;
 }
 
-void Spaceship::update()
+void Spaceship::update(Time dt)
 {
     //input
     if (shipCategory == PLAYER)
@@ -48,24 +48,26 @@ void Spaceship::update()
         else if (velocity.x < 0)
             velocity.x += extraVelocity;
     }
-
-    //Rounding
-    //velocity.x = roundf(velocity.x * 1000) / 1000;
-    //velocity.y = roundf(velocity.y * 1000) / 1000;
+    ///*
+    if (fabs(velocity.x) < 0.04)
+        velocity.x = 0;
+    if (fabs(velocity.y) < 0.04)
+        velocity.y = 0;
+    //*/
 
     //Capping
-    int maxSpeed = 7;
+    int maxSpeed = 4;
 
     velocity.x = velocity.x > maxSpeed ? maxSpeed : velocity.x;
     velocity.x = velocity.x <-maxSpeed ?-maxSpeed : velocity.x;
     velocity.y = velocity.y > maxSpeed ? maxSpeed : velocity.y;
     velocity.y = velocity.y <-maxSpeed ?-maxSpeed : velocity.y;
 
-    position.x += velocity.x * speed;
-    position.y += velocity.y * speed;
+    position.x += velocity.x * speed * dt.asSeconds();
+    position.y += velocity.y * speed * dt.asSeconds();
 
     rotation = (atan2(velocity.y, velocity.x) * 180 / 3.141592653) - 90;
-    std::cout << velocity.x << " <- X      " << velocity.y << " <- Y\n";
+    //std::cout << fabs(velocity.x) << " <- X      " << fabs(velocity.y) << " <- Y\n";
 }
 
 void Spaceship::draw(RenderWindow* window, Texture* texture)
@@ -89,6 +91,6 @@ void Spaceship::draw(RenderWindow* window, Texture* texture)
         break;
     }
 
-    celShade(spaceShipSprite, window);
+    celShade(spaceShipSprite, window, Color(0, 0, 0));
     window->draw(spaceShipSprite);
 }
