@@ -19,6 +19,8 @@ class SolarSystem
         void update(Time dt);
         void draw(RenderWindow* window, Texture* texture);
         void generateSystem();
+        void generateNear(int genSeed);
+        void generateGas(int genSeed);
     protected:
     private:
         std::vector<Planet> planets;

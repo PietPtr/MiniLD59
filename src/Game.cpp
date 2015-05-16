@@ -12,9 +12,10 @@ Game::Game(RenderWindow* _window)
     loadTextures();
     //myTextureAtlas.setSmooth(true);
 
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        systems.push_back(SolarSystem(Vector2f(randint(-10000, 10000), randint(-10000, 10000))));
+        int area = 25000;
+        systems.push_back(SolarSystem(Vector2f(randint(-area, area) + 3, randint(-area, area) + 3)));
     }
 }
 

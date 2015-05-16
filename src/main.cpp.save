@@ -3,19 +3,16 @@
 #include <iostream>
 
 using namespace sf;
-
-
-RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
-
-Game game(&window);
-
-int main()
+int main(int stars, int area)
 {
     srand(time(NULL));
-int windowWidth = 1280;
-int windowHeigth = 720;
-    
-window.setVerticalSyncEnabled(true);
+
+    int windowWidth = 1280;
+    int windowHeigth = 720;
+    RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
+    window.setVerticalSyncEnabled(true);
+
+    Game game(&window, stars, are);
 
     while (window.isOpen())
     {
@@ -50,7 +47,7 @@ int randint(int low, int high, int seed)
 int randint(int low, int high)
 {
     int value = rand() % (high + 1 - low) + low;
-    srand(game.getTime().asMilliseconds);
+    srand(time(NULL) * value * rand());
 
     return value;
 }
