@@ -25,28 +25,28 @@ void Spaceship::update()
         else if (Joystick::getAxisPosition(0, Joystick::Y) > 0 + deadzone)
             velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
         else if (velocity.y > 0)
-            velocity.y /= 1.1;
+            velocity.y -= extraVelocity;
 
         if (Keyboard::isKeyPressed(Keyboard::W))
             velocity.y -= extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::Y) < 0 - deadzone)
             velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
         else if (velocity.y < 0)
-            velocity.y /= 1.1;
+            velocity.y += extraVelocity;
 
         if (Keyboard::isKeyPressed(Keyboard::D))
             velocity.x += extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::X) > 0 + deadzone)
             velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
         else if (velocity.x > 0)
-            velocity.x /= 1.1;
+            velocity.x -= extraVelocity;
 
         if (Keyboard::isKeyPressed(Keyboard::A))
             velocity.x -= extraVelocity;
         else if (Joystick::getAxisPosition(0, Joystick::X) < 0 - deadzone)
             velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
         else if (velocity.x < 0)
-            velocity.x /= 1.1;
+            velocity.x += extraVelocity;
     }
 
     //Rounding
