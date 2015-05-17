@@ -11,12 +11,6 @@ Game::Game(RenderWindow* _window)
     window = _window;
     loadTextures();
     //myTextureAtlas.setSmooth(true);
-
-    for (int i = 0; i < 2; i++)
-    {
-        int area = 250;
-        systems.push_back(SolarSystem(Vector2f(randint(-area, area) + 3, randint(-area, area) + 3)));
-    }
 }
 
 void Game::update()
@@ -47,19 +41,57 @@ void Game::update()
     dt = clock.restart();
     totalTime += dt;
 
-   //Vector2f topLeftVisible(view.getCenter().x - windowWidth / 2 - 0, view.getCenter().y - windowHeight - 0);
-    //Vector2f bottomRightVisible(view.getCenter().x + windowWidth / 2 + 0, view.getCenter().y + windowHeight + 0);
+    //Delete and create systems
+    int renderDistance = 1000;
+    Vector2f     topLeftVisible(view.getCenter().x - windowWidth / 2 - renderDistance, view.getCenter().y - windowHeight / 2 - renderDistance);
+    Vector2f bottomRightVisible(view.getCenter().x + windowWidth / 2 + renderDistance, view.getCenter().y + windowHeight / 2 + renderDistance);
 
-    for (int i = 0; i < systems.size(); i++)
+    for (int i = systems.size() - 1; i >= 0; i--)
     {
         Vector2f systemPos = systems.at(i).getPosition();
-        //if ((systemPos.x > topLeftVisible.x && systemPos.y > topLeftVisible.y) || (systemPos.x < bottomRightVisible.x && systemPos.y < bottomRightVisible.y))
-        //{
-            //std::cout << "not visible" << frame << "\n";
-        //}
-        std::cout << systemPos.x << " " << systemPos.y << "\n";
-
+        if (!((systemPos.x > topLeftVisible.x && systemPos.y > topLeftVisible.y) && (systemPos.x < bottomRightVisible.x && systemPos.y < bottomRightVisible.y)) && frame > 60)
+        {
+            systems.erase(systems.begin() + i);
+        }
     }
+    Vector2f topLeftSystemTile;
+    topLeftSystemTile.x = ((int)topLeftVisible.x - (int)topLeftVisible.x % 512) / 512;
+    topLeftSystemTile.y = ((int)topLeftVisible.y - (int)topLeftVisible.y % 512) / 512;
+    Vector2f bottomRightSystemTile;
+    bottomRightSystemTile.x = ((int)bottomRightVisible.x - (int)bottomRightVisible.x % 512) / 512;
+    bottomRightSystemTile.y = ((int)bottomRightVisible.y - (int)bottomRightVisible.y % 512) / 512;
+
+    for (int y = topLeftSystemTile.y; y < bottomRightSystemTile.y; y++)
+    {
+        for (int x = topLeftSystemTile.x; x < bottomRightSystemTile.x; x++)
+        {
+            if (randint(0, 13, x * y) == 0)
+            {
+                Vector2f newSystemPosition;
+                newSystemPosition.x = x * 512;
+                newSystemPosition.y = y * 512;
+
+                bool locationAvailable = true;
+                for (int i = 0; i < systems.size(); i++)
+                {
+                    if (systems.at(i).getPosition() == newSystemPosition)
+                    {
+                        locationAvailable = false;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                }
+                if (locationAvailable)
+                    systems.push_back(SolarSystem(newSystemPosition));
+            }
+        }
+    }
+        std::cout << systems.size();
+
 
     //Update objects
     player.update(dt);
@@ -86,7 +118,7 @@ void Game::draw()
 
     if (Joystick::isButtonPressed(0, 0) || Keyboard::isKeyPressed(Keyboard::Comma))
     {
-        view.zoom(0.25);
+        view.zoom(0.5);
     }
     if (Joystick::isButtonPressed(0, 1) || Keyboard::isKeyPressed(Keyboard::Period))
     {

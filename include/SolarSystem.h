@@ -30,7 +30,7 @@ class SolarSystem
 
         int asteroidBelt = 0;               //0: no belt, > 0: radius of asteroid belt
         float asteroidRotation = 0.1;
-        float asteroidSpeed = 0.5;
+        float asteroidSpeed = 0.1;
 
 };
 

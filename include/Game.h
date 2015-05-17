@@ -22,13 +22,11 @@ class Game
         int frame = 0;
         int windowWidth = 1280;
         int windowHeight = 720;
-        Spaceship player {PLAYER, Vector2f(0, 0), 400.0f};
+        Spaceship player {PLAYER, Vector2f(2100, 1050), 400.0f};
         Clock clock;
         Time dt;
         Time totalTime;
         View view;
 
-        //Planet testPlanet {100, 100.0f, SATURN, 1, 1};
-        //SolarSystem testSystem {Vector2f(0, 0)};
         std::vector <SolarSystem> systems;
 };
