@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace sf;
-int main(int stars, int area)
+int main()
 {
     srand(time(NULL));
 
@@ -12,7 +12,7 @@ int main(int stars, int area)
     RenderWindow window(VideoMode(windowWidth, windowHeigth), "Float");
     window.setVerticalSyncEnabled(true);
 
-    Game game(&window, stars, are);
+    Game game(&window);
 
     while (window.isOpen())
     {
@@ -50,4 +50,50 @@ int randint(int low, int high)
     srand(time(NULL) * value * rand());
 
     return value;
+}
+
+void drawString(RenderWindow* window, std::string text, Vector2f position, Texture* fontTexture, Color color)
+{
+    int drawY = position.y;
+    int drawX = position.x;
+
+    int letterWidth = 5;
+    int letterHeight = 7;
+
+    for (int i = 0; i < text.length(); i++)
+    {
+        int num = (int)(text[i]);
+
+        Sprite charSprite;
+        charSprite.setTexture(*fontTexture);
+
+        drawX += letterWidth + 1;
+
+        if (num >= 48 && num <= 57)
+            charSprite.setTextureRect(IntRect((num - 48) * letterWidth, 0, letterWidth, letterHeight));
+        else if (num >= 65 && num <= 90)
+            charSprite.setTextureRect(IntRect((num - 55) * letterWidth, 0, letterWidth, letterHeight));
+        else if (num >= 97 && num <= 122)
+            charSprite.setTextureRect(IntRect((num - 61) * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == 58)
+            charSprite.setTextureRect(IntRect(62 * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == 46)
+            charSprite.setTextureRect(IntRect(63 * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == 44)
+            charSprite.setTextureRect(IntRect(64 * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == 32)
+            charSprite.setTextureRect(IntRect(66 * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == )
+        else
+            charSprite.setTextureRect(IntRect(65 * letterWidth, 0, letterWidth, letterHeight));
+
+        charSprite.setColor(color);
+        charSprite.setPosition(Vector2f(drawX, drawY));
+        window->draw(charSprite);
+    }
+}
+
+std::string floatToString(float flt)
+{
+
 }

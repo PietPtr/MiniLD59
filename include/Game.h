@@ -12,6 +12,7 @@ class Game
         Game(RenderWindow* window);
         void update();
         void draw();
+        void drawText();
         void loadTextures();
         Time getTotalTime() { return totalTime; };
     protected:
@@ -19,6 +20,7 @@ class Game
         RenderWindow* window = nullptr;
         Texture myTextureAtlas;
         Texture someonesTextureAtlas;
+        Texture fontTexture;
         int frame = 0;
         int windowWidth = 1280;
         int windowHeight = 720;
