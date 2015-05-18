@@ -190,13 +190,13 @@ void Game::drawText()
         std::string text = "X:" + std::to_string((int)systems.at(i).getPosition().x) + ", Y:" + std::to_string((int)systems.at(i).getPosition().y);
         Vector2f drawPos(systems.at(i).getPosition().x + 25, systems.at(i).getPosition().y - 25);
         drawTag(text, drawPos, Color(0, 200, 0));
-        
+
         std::vector<Planet>* planets = systems.at(i).getPlanets();
         for (int j = 0; j < planets->size(); j++)
         {
-            std::string text = "X:" + std::to_string((int)planets->at(j).getPosition().x + 
-                               ", Y:" + std::to_string((int)planets->at(j)).getPosition().y;
-            vector2f drawPos(planets->getPosition().x + 10, planets->getPosition().y - 10);
+            std::string text = "X:" + std::to_string((int)(planets->at(j).getPosition().x)) +
+                               ", Y:" + std::to_string((int)(planets->at(j).getPosition().y));
+            Vector2f drawPos(planets->at(j).getPosition().x + 10, planets->at(j).getPosition().y - 10);
             drawTag(text, drawPos, Color(0, 200, 0));
         }
     }
@@ -218,12 +218,12 @@ void Game::loadTextures()
 
 void Game::drawTag(std::string text, Vector2f position, Color color)
 {
-    RectangleShape bg(Vector2f(text.length() * 6 + 3, 4));
-    bg.setPosition(Vector2f(position.x - 2, position.y - 2));
+    RectangleShape bg(Vector2f(text.length() * 6 + 3, 7 + 4));
+    bg.setPosition(Vector2f(position.x + 3, position.y - 2));
     bg.setOutlineThickness(1);
     bg.setOutlineColor(color);
     bg.setFillColor(Color(0, 0, 0));
     window->draw(bg);
-    
+
     drawString(window, text, position, &fontTexture, color);
 }

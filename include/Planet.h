@@ -29,6 +29,7 @@ class Planet : public GameObject
         void setPosition(Vector2f value) { position = value; }
         float getRadius() { return radius; }
         float getCirculationPosition() { return circulationPosition; }
+        Vector2f getPosition() { return position; }
     protected:
     private:
         Vector2f position;
