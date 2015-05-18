@@ -47,7 +47,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
         starSprite.setPosition(position);
     }
 
-    celShade(starSprite, window, Color(255, 255, 255));
+    celShade(starSprite, window, Color(0, 0, 0));
     window->draw(starSprite);
 
     //planets
@@ -67,7 +67,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
     //Asteroids
     if (asteroidBelt > 0)
     {
-        for (int i = 0; i < 600; i++)
+        for (int i = 0; i < asteroidBelt; i++)
         {
             Sprite asteroidSprite;
             asteroidSprite.setTexture(*texture);
@@ -101,9 +101,9 @@ void SolarSystem::generateSystem()
 
     if (starType == REDDWARF)
     {
-        generateNear(genSeed, 2, 8);a
+        generateNear(genSeed, 2, 8);
 
-        std::cout << "Red dwarf system, " << planets.size() << " planets.\n";
+        //std::cout << "Red dwarf system, " << planets.size() << " planets at X:" << position.x << ", Y:" << position.y << "\n";
     }
     else if (starType == SUNLIKE)
     {
@@ -113,8 +113,9 @@ void SolarSystem::generateSystem()
         if (randint(0, 3, genSeed) != 1) //25% percent change on asteroid belt
             asteroidBelt = planets.back().getRadius() + randint(50, 100), genSeed;
 
-        std::cout << "Sunlike system, " << planets.size() << " planets, asteroid ring at " << asteroidBelt << " KM\n";
+        //std::cout << "Sunlike system, " << planets.size() << " planets, asteroid ring at " << asteroidBelt << " KM at X:" << position.x << ", Y:" << position.y << "\n";
     }
+    std::cout << "seed:" << genSeed << "\n";
 }
 
 void SolarSystem::generateNear(int genSeed, int minPlanets, int maxPlanets)

@@ -28,6 +28,10 @@ void Game::update()
             {
                 window->close();
             }
+            else if (event.key.code == Keyboard::Tab)
+            {
+                displayHUD = !displayHUD;
+            }
         }
         if (event.type == Event::Resized)
         {
@@ -163,7 +167,7 @@ void Game::draw()
     {
         for (int x = 0; x < (int)(windowWidth / 16.0) + 3; x++)
         {
-            background.setTextureRect(IntRect(randint(0, 7, (y + 420 + topLeftTile.y / 16) * (x + 420 + topLeftTile.x / 16)) * 16, 64, 16, 16));
+            background.setTextureRect(IntRect(randint(0, 7, ((y + topLeftTile.y / 16)) * ((x + topLeftTile.x / 16)) * 16, 64, 16, 16));
             background.setPosition(x * 16 + topLeftTile.x, y * 16 + topLeftTile.y);
             window->draw(background);
         }
@@ -178,7 +182,8 @@ void Game::draw()
     player.draw(window, &myTextureAtlas);
     //testPlanet.draw(window, &myTextureAtlas);
 
-    drawText();
+    if (displayHUD)
+        drawText();
 
     window->display();
 }
@@ -188,9 +193,22 @@ void Game::drawText()
     for (int i = 0; i < systems.size(); i++)
     {
         std::string text = "X:" + std::to_string((int)systems.at(i).getPosition().x) + ", Y:" + std::to_string((int)systems.at(i).getPosition().y);
-        Vector2f drawPos(sys)
-        drawString(window, text, systems.at(i).getPosition(), &fontTexture, Color(0, 200, 0));
+        Vector2f drawPos(systems.at(i).getPosition().x + 25, systems.at(i).getPosition().y - 25);
+        drawTag(text, drawPos, Color(0, 255, 0, 128));
+
+        std::vector<Planet>* planets = systems.at(i).getPlanets();
+        for (int j = 0; j < planets->size(); j++)
+        {
+            std::string text = "X:" + std::to_string((int)(planets->at(j).getPosition().x)) +
+                               ", Y:" + std::to_string((int)(planets->at(j).getPosition().y));
+            Vector2f drawPos(planets->at(j).getPosition().x + 10, planets->at(j).getPosition().y - 10);
+            drawTag(text, drawPos, Color(0, 255, 0, 128));
+        }
     }
+
+    std::string text = "X:" + std::to_string((int)player.getPosition().x) + ", Y:" + std::to_string((int)player.getPosition().y);
+    Vector2f drawPos(player.getPosition().x + 12, player.getPosition().y - 12);
+    drawTag(text, drawPos, Color(0, 255, 0, 128));
 }
 
 void Game::loadTextures()
@@ -203,3 +221,15 @@ void Game::loadTextures()
         window->close();
 }
 
+void Game::drawTag(std::string text, Vector2f position, Color color)
+{
+    RectangleShape bg(Vector2f(text.length() * 6 + 3, 7 + 4));
+    bg.setPosition(Vector2f((int)(position.x + 3), (int)(position.y - 2)));
+    bg.setOutlineThickness(1);
+    bg.setOutlineColor(color);
+    bg.setFillColor(Color(0, 0, 0, 128));
+    window->draw(bg);
+
+    Vector2f textPos((int)(position.x), (int)(position.y));
+    drawString(window, text, textPos, &fontTexture, color);
+}

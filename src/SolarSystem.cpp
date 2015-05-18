@@ -90,7 +90,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
 
 void SolarSystem::generateSystem()
 {
-    int genSeed = position.x * position.y;
+    int genSeed = position.x + position.y;
 
     int randomStar = randint(0, 1000, genSeed*2);
 
@@ -103,7 +103,7 @@ void SolarSystem::generateSystem()
     {
         generateNear(genSeed, 2, 8);
 
-        std::cout << "Red dwarf system, " << planets.size() << " planets at X:" << position.x << ", Y:" << position.y << "\n";
+        //std::cout << "Red dwarf system, " << planets.size() << " planets at X:" << position.x << ", Y:" << position.y << "\n";
     }
     else if (starType == SUNLIKE)
     {
@@ -113,8 +113,9 @@ void SolarSystem::generateSystem()
         if (randint(0, 3, genSeed) != 1) //25% percent change on asteroid belt
             asteroidBelt = planets.back().getRadius() + randint(50, 100), genSeed;
 
-        std::cout << "Sunlike system, " << planets.size() << " planets, asteroid ring at " << asteroidBelt << " KM at X:" << position.x << ", Y:" << position.y << "\n";
+        //std::cout << "Sunlike system, " << planets.size() << " planets, asteroid ring at " << asteroidBelt << " KM at X:" << position.x << ", Y:" << position.y << "\n";
     }
+    std::cout << "seed:" << genSeed << "\n";
 }
 
 void SolarSystem::generateNear(int genSeed, int minPlanets, int maxPlanets)
