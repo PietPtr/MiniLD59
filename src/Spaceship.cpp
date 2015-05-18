@@ -73,7 +73,7 @@ void Spaceship::update(Time dt)
         velocity.x = 0;
 
     //Capping
-    int maxSpeed = 400000;
+    int maxSpeed = 4;
 
     velocity.x = velocity.x > maxSpeed ? maxSpeed : velocity.x;
     velocity.x = velocity.x <-maxSpeed ?-maxSpeed : velocity.x;
