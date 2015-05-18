@@ -207,3 +207,14 @@ void Game::loadTextures()
         window->close();
 }
 
+void Game::drawTag(std::string text, Vector2f position, Color color)
+{
+    RectangleShape bg(Vector2f(text.length() * 6 + 3, 4));
+    bg.setPosition(Vector2f(position.x - 2, position.y - 2));
+    bg.setOutlineThickness(1);
+    bg.setOutlineColor(color);
+    bg.setFillColor(Color(0, 0, 0));
+    window->draw(bg);
+    
+    drawString(window, text, position, &fontTexture, color);
+}
