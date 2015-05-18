@@ -22,7 +22,7 @@ class SolarSystem
         void generateNear(int genSeed, int minPlanets, int maxPlanets);
         void generateGas(int genSeed);
         Vector2f getPosition() { return position; }
-        int getAmountOfPlanets() { return planets.size() }
+        std::vector<Planet>* getPlanets() { return &planets }
     protected:
     private:
         std::vector<Planet> planets;
