@@ -189,12 +189,21 @@ void Game::drawText()
     {
         std::string text = "X:" + std::to_string((int)systems.at(i).getPosition().x) + ", Y:" + std::to_string((int)systems.at(i).getPosition().y);
         Vector2f drawPos(systems.at(i).getPosition().x + 25, systems.at(i).getPosition().y - 25);
-        drawString(window, text, drawPos, &fontTexture, Color(0, 200, 0));
+        drawTag(text, drawPos, Color(0, 200, 0));
+        
+        std::vector<Planet>* planets = systems.at(i).getPlanets();
+        for (int j = 0; j < planets->size(); j++)
+        {
+            std::string text = "X:" + std::to_string((int)planets->at(j).getPosition().x + 
+                               ", Y:" + std::to_string((int)planets->at(j)).getPosition().y;
+            vector2f drawPos(planets->getPosition().x + 10, planets->getPosition().y - 10);
+            drawTag(text, drawPos, Color(0, 200, 0));
+        }
     }
 
     std::string text = "X:" + std::to_string((int)player.getPosition().x) + ", Y:" + std::to_string((int)player.getPosition().y);
     Vector2f drawPos(player.getPosition().x + 12, player.getPosition().y - 12);
-    drawString(window, text, drawPos, &fontTexture, Color(0, 200, 0));
+    drawTag(text, drawPos, Color(0, 200, 0));
 }
 
 void Game::loadTextures()
