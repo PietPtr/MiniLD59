@@ -14,6 +14,7 @@ class Game
         void draw();
         void drawText();
         void loadTextures();
+        void Game::drawTag(std::string text, Vector2f position, Color color);
         Time getTotalTime() { return totalTime; };
     protected:
     private:
