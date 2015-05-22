@@ -67,6 +67,27 @@ void Game::update()
     if (radar)
         dt = seconds(dt.asSeconds() / 5);
 
+    if (gameState == PLAY)
+    {
+        playState();
+    }
+    else if (gameState == READ)
+    {
+        readState();
+    }
+
+    //screenshots!
+    if (Keyboard::isKeyPressed(Keyboard::F11))
+    {
+        Image Screen = window->capture();
+        Screen.saveToFile("screenshot.png");
+    }
+
+    frame++;
+}
+
+void Game::playState()
+{
     //Create systems
     int renderDistance = 1000;
     Vector2f     topLeftVisible(view.getCenter().x - windowWidth / 2 - renderDistance, view.getCenter().y - windowHeight / 2 - renderDistance);
@@ -130,14 +151,6 @@ void Game::update()
         std::cout << "SysNum:" << systems.size() << ", FPS:" << 1.0 / dt.asSeconds() << ", X:" << player.getPosition().x << ", Y:" << player.getPosition().y
                   << ", dstX:" << topLeftDestroy.x << ", dstY:" << topLeftDestroy.y << "\n";
 
-    //screenshots!
-    if (Keyboard::isKeyPressed(Keyboard::F11))
-    {
-        Image Screen = window->capture();
-        Screen.saveToFile("screenshot.png");
-    }
-
-
     //Update objects
     player.update(dt);
     //testSystem.update(dt);
@@ -145,8 +158,11 @@ void Game::update()
     {
         systems.at(i).update(dt);
     }
+}
 
-    frame++;
+void Game::readState()
+{
+
 }
 
 void Game::draw()
@@ -154,39 +170,48 @@ void Game::draw()
     window->clear(Color(255, 255, 255));
 
     //Set the view
-    Vector2f roundedPosition;
-    roundedPosition.x = (int)player.getPosition().x;
-    roundedPosition.y = (int)player.getPosition().y;
-
-    view.setCenter(roundedPosition);
-    view.setSize(windowWidth, windowHeight);
-
-    if (Joystick::isButtonPressed(0, 0) || Keyboard::isKeyPressed(Keyboard::Comma))
-    {
-        view.zoom(0.5);
-    }
-    if (Joystick::isButtonPressed(0, 1) || Keyboard::isKeyPressed(Keyboard::Period))
-    {
-        view.zoom(0.125);
-    }
-
-    window->setView(view);
-
-    hudColor = radar ? GREEN : WHITE;
-
     drawBackground();
 
-    //Draw all the objects
-    //testSystem.draw(window, &myTextureAtlas);
-    for (int i = 0; i < systems.size(); i++)
+    if (gameState == PLAY || gameState == READ)
     {
-        systems.at(i).draw(window, useTexture, hudColor);
-    }
-    player.draw(window, useTexture, hudColor);
-    //testPlanet.draw(window, &myTextureAtlas);
+        Vector2f roundedPosition;
+        roundedPosition.x = (int)player.getPosition().x;
+        roundedPosition.y = (int)player.getPosition().y;
 
-    if (radar)
-        drawHUD();
+        view.setCenter(roundedPosition);
+        view.setSize(windowWidth, windowHeight);
+
+        if (Keyboard::isKeyPressed(Keyboard::Comma))
+        {
+            view.zoom(0.5);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Period))
+        {
+            view.zoom(0.125);
+        }
+
+        window->setView(view);
+
+        hudColor = radar ? GREEN : WHITE;
+
+        //Draw all the objects
+        //testSystem.draw(window, &myTextureAtlas);
+        for (int i = 0; i < systems.size(); i++)
+        {
+            systems.at(i).draw(window, useTexture, hudColor);
+        }
+        player.draw(window, useTexture, hudColor);
+        //testPlanet.draw(window, &myTextureAtlas);
+
+        if (radar)
+            drawHUD();
+    }
+    if (gameState == READ && gameState != PLAY)
+    {
+        //draw rectangle
+        //draw text generated from planet
+    }
+}
 
     window->display();
 }
@@ -304,7 +329,7 @@ void Game::drawHUD()
     Sprite entryPopup;
     entryPopup.setPosition(entryPopupPos);
     entryPopup.setColor(Color(0, 200, 0));
-    entryPopup.setTexture(myTextureAtlas);
+    entryPopup.setTexture(*useTexture);
     entryPopup.setTextureRect(IntRect(0, 48, 16, 16));
     window->draw(entryPopup);
 }

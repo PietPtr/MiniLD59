@@ -9,11 +9,19 @@
 
 using namespace sf;
 
+enum GameState {
+    PLAY,
+    READ
+};
+
 class Game
 {
     public:
         Game(RenderWindow* window);
         void update();
+        void playState();
+        void readState();
+
         void draw();
         void drawText();
         void drawBackground();
@@ -25,9 +33,9 @@ class Game
     protected:
     private:
         RenderWindow* window = nullptr;
-        Texture 
         Texture myTextureAtlas;
         Texture someonesTextureAtlas;
+        Texture* useTexture = &myTextureAtlas;
         Texture fontTexture;
         int frame = 0;
         int windowWidth = 1280;
@@ -40,6 +48,7 @@ class Game
         bool radar = false;
         int radarRadius = 0;
         Color hudColor = radar ? GREEN : WHITE;
+        GameState = PLAY;
 
         std::vector <SolarSystem> systems;
 };
