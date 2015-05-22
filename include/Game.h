@@ -20,12 +20,14 @@ class Game
         void drawHUD();
         void loadTextures();
         void drawTag(std::string text, Vector2f position, Color color);
+        float getDistance(Vector2f point1, Vector2f point2);
         Time getTotalTime() { return totalTime; };
     protected:
     private:
         RenderWindow* window = nullptr;
         Texture myTextureAtlas;
         Texture someonesTextureAtlas;
+        Texture* useTexture = &someonesTextureAtlas;
         Texture fontTexture;
         int frame = 0;
         int windowWidth = 1280;

@@ -43,6 +43,13 @@ void Game::update()
                     radar = true;
                 }
             }
+            else if (event.key.code == Keyboard::F2)
+            {
+                if (useTexture == &myTextureAtlas)
+                    useTexture = &someonesTextureAtlas;
+                else if (useTexture == &someonesTextureAtlas)
+                    useTexture = &myTextureAtlas;
+            }
         }
         if (event.type == Event::Resized)
         {
@@ -173,9 +180,9 @@ void Game::draw()
     //testSystem.draw(window, &myTextureAtlas);
     for (int i = 0; i < systems.size(); i++)
     {
-        systems.at(i).draw(window, &myTextureAtlas, hudColor);
+        systems.at(i).draw(window, useTexture, hudColor);
     }
-    player.draw(window, &myTextureAtlas, hudColor);
+    player.draw(window, useTexture, hudColor);
     //testPlanet.draw(window, &myTextureAtlas);
 
     if (radar)
@@ -188,7 +195,7 @@ void Game::drawBackground()
 {
     //Draw the background
     Sprite background;
-    background.setTexture(myTextureAtlas);
+    background.setTexture(*useTexture);
     Vector2f topLeftTile;// = player.getPosition() - (Vector2f(windowWidth, windowHeight) / 2.0f);
 
     topLeftTile.x = (int)(player.getPosition().x - windowWidth / 2.0f);
@@ -215,16 +222,17 @@ void Game::drawText()
     {
         std::string text = "X:" + std::to_string((int)systems.at(i).getPosition().x) + ", Y:" + std::to_string((int)systems.at(i).getPosition().y);
         Vector2f drawPos(systems.at(i).getPosition().x + 20, systems.at(i).getPosition().y - 20);
+
         drawTag(text, drawPos, Color(0, 255, 0, 128));
 
-        std::vector<Planet>* planets = systems.at(i).getPlanets();
+        /*std::vector<Planet>* planets = systems.at(i).getPlanets();
         for (int j = 0; j < planets->size(); j++)
         {
             std::string text = "X:" + std::to_string((int)(planets->at(j).getPosition().x)) +
                                ", Y:" + std::to_string((int)(planets->at(j).getPosition().y));
             Vector2f drawPos(planets->at(j).getPosition().x + 10, planets->at(j).getPosition().y - 10);
             //drawTag(text, drawPos, Color(0, 255, 0, 128));
-        }
+        }*/
     }
 
     std::string text = "X:" + std::to_string((int)player.getPosition().x) + ", Y:" + std::to_string((int)player.getPosition().y);
@@ -257,8 +265,10 @@ void Game::drawTag(std::string text, Vector2f position, Color color)
 
 void Game::drawHUD()
 {
+    //coords etc
     drawText();
 
+    //circle thing that is supposed to look like a radar
     int maxRadius = 255;
     int radarOpacity = 256 - ((float)radarRadius / (float)maxRadius) * 255;
     CircleShape radarCircle;
@@ -272,4 +282,36 @@ void Game::drawHUD()
     window->draw(radarCircle);
 
     radarRadius = radarRadius > maxRadius ? 0 : radarRadius + 4;
+
+    //planet guide entry popup
+    Vector2f entryPopupPos(2 ^ 32, 0);
+    for (int j = 0; j < systems.size(); j++)
+    {
+        if (getDistance(systems.at(j).getPosition(), player.getPosition()) < 15)
+        {
+             entryPopupPos = systems.at(j).getPosition();
+        }
+
+        std::vector<Planet>* planets = systems.at(j).getPlanets();
+        for (int i = 0; i < planets->size(); i++)
+        {
+            if (getDistance(planets->at(i).getPosition(), player.getPosition()) < 15)
+            {
+                entryPopupPos = planets->at(i).getPosition();
+            }
+        }
+    }
+    Sprite entryPopup;
+    entryPopup.setPosition(entryPopupPos);
+    entryPopup.setColor(Color(0, 200, 0));
+    entryPopup.setTexture(myTextureAtlas);
+    entryPopup.setTextureRect(IntRect(0, 48, 16, 16));
+    window->draw(entryPopup);
+}
+
+float Game::getDistance(Vector2f point1, Vector2f point2)
+{
+    float xdistance = fabs(point1.x - point2.x);
+    float ydistance = fabs(point1.y - point2.y);
+    return (float)sqrt(xdistance * xdistance + ydistance * ydistance);
 }

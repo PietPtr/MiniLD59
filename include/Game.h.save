@@ -4,6 +4,9 @@
 #include "Planet.h"
 #include "SolarSystem.h"
 
+#define GREEN Color(0, 200, 0)
+#define WHITE Color(255, 255, 255)
+
 using namespace sf;
 
 class Game
@@ -14,12 +17,15 @@ class Game
         void draw();
         void drawText();
         void drawBackground();
+        void drawHUD();
         void loadTextures();
         void drawTag(std::string text, Vector2f position, Color color);
+        float getDistance(Vector2f point1, Vector2f point2);
         Time getTotalTime() { return totalTime; };
     protected:
     private:
         RenderWindow* window = nullptr;
+        Texture 
         Texture myTextureAtlas;
         Texture someonesTextureAtlas;
         Texture fontTexture;
@@ -32,6 +38,8 @@ class Game
         Time totalTime;
         View view;
         bool radar = false;
+        int radarRadius = 0;
+        Color hudColor = radar ? GREEN : WHITE;
 
         std::vector <SolarSystem> systems;
 };
