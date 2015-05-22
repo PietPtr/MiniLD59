@@ -20,29 +20,7 @@ void Spaceship::update(Time dt)
         float extraVelocity = 0.05;
         float velocityDevider = 1000;
         float slowDown = 2;
-
-        if (usesController)
-        {
-            if (Joystick::getAxisPosition(0, Joystick::Y) > 0 + deadzone)
-                velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
-            else if (velocity.y > 0)
-                velocity.y -= extraVelocity * slowDown;
-                
-            if (Joystick::getAxisPosition(0, Joystick::Y) < 0 - deadzone)
-                velocity.y += (Joystick::getAxisPosition(0, Joystick::Y)) / velocityDevider;
-            else if (velocity.y > 0)
-                velocity.y -= extraVelocity * slowDown;
-            if (Joystick::getAxisPosition(0, Joystick::X) > 0 + deadzone)
-                velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
-            else if (velocity.y > 0)
-                velocity.y -= extraVelocity * slowDown;
-            if (Joystick::getAxisPosition(0, Joystick::X) < 0 - deadzone)
-                velocity.x += (Joystick::getAxisPosition(0, Joystick::X)) / velocityDevider;
-            else if (velocity.y > 0)
-                velocity.y -= extraVelocity * slowDown;
-        }
-        else
-        {
+        
             if (Keyboard::isKeyPressed(Keyboard::S))
                 velocity.y += extraVelocity;
             else if (velocity.y > 0)
@@ -83,7 +61,7 @@ void Spaceship::update(Time dt)
 
     if (velocity.x != 0 || velocity.y != 0)
         rotation = (atan2(velocity.y, velocity.x) * 180 / 3.141592653) - 90;
-    std::cout << fabs(velocity.x) << " <- X      " << fabs(velocity.y) << " <- Y\n";
+    //std::cout << fabs(velocity.x) << " <- X      " << fabs(velocity.y) << " <- Y\n";
 }
 
 void Spaceship::draw(RenderWindow* window, Texture* texture)
