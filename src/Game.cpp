@@ -33,7 +33,15 @@ void Game::update()
             }
             else if (event.key.code == Keyboard::Return)
             {
-                radar = !radar;
+                if (radar)
+                {
+                    radar = false;
+                    radarRadius = 0;
+                }
+                else
+                {
+                    radar = true;
+                }
             }
         }
         if (event.type == Event::Resized)
@@ -171,7 +179,7 @@ void Game::draw()
     //testPlanet.draw(window, &myTextureAtlas);
 
     if (radar)
-        drawText();
+        drawHUD();
 
     window->display();
 }
@@ -245,4 +253,23 @@ void Game::drawTag(std::string text, Vector2f position, Color color)
 
     Vector2f textPos((int)(position.x), (int)(position.y));
     drawString(window, text, textPos, &fontTexture, color);
+}
+
+void Game::drawHUD()
+{
+    drawText();
+
+    int maxRadius = 255;
+    int radarOpacity = 256 - ((float)radarRadius / (float)maxRadius) * 255;
+    CircleShape radarCircle;
+
+    radarCircle.setFillColor(Color(0, 0, 0, 0));
+    radarCircle.setOutlineThickness(1);
+    radarCircle.setOutlineColor(Color(0, 200, 0, radarOpacity));
+    radarCircle.setPosition(player.getPosition().x - radarRadius,
+                            player.getPosition().y - radarRadius);
+    radarCircle.setRadius(radarRadius);
+    window->draw(radarCircle);
+
+    radarRadius = radarRadius > maxRadius ? 0 : radarRadius + 4;
 }

@@ -17,6 +17,7 @@ class Game
         void draw();
         void drawText();
         void drawBackground();
+        void drawHUD();
         void loadTextures();
         void drawTag(std::string text, Vector2f position, Color color);
         Time getTotalTime() { return totalTime; };
@@ -35,6 +36,7 @@ class Game
         Time totalTime;
         View view;
         bool radar = false;
+        int radarRadius = 0;
         Color hudColor = radar ? GREEN : WHITE;
 
         std::vector <SolarSystem> systems;
