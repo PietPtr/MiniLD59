@@ -17,7 +17,7 @@ class SolarSystem
     public:
         SolarSystem(Vector2f _position);
         void update(Time dt);
-        void draw(RenderWindow* window, Texture* texture);
+        void draw(RenderWindow* window, Texture* texture, Color color);
         void generateSystem();
         void generateNear(int genSeed, int minPlanets, int maxPlanets);
         void generateGas(int genSeed);

@@ -11,7 +11,6 @@ void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
 int randint(int low, int high, int seed);
 int randint(int low, int high);
 
-
 SolarSystem::SolarSystem(Vector2f _position)
 {
     position = _position;
@@ -28,7 +27,7 @@ void SolarSystem::update(Time dt)
     asteroidRotation += asteroidSpeed * dt.asSeconds();
 }
 
-void SolarSystem::draw(RenderWindow* window, Texture* texture)
+void SolarSystem::draw(RenderWindow* window, Texture* texture, Color color)
 {
     Sprite starSprite;
     starSprite.setTexture(*texture);
@@ -47,6 +46,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
         starSprite.setPosition(position);
     }
 
+    starSprite.setColor(color);
     celShade(starSprite, window, Color(0, 0, 0));
     window->draw(starSprite);
 
@@ -61,7 +61,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
 
         planets.at(i).setPosition(planetPos + position);
 
-        planets.at(i).draw(window, texture);
+        planets.at(i).draw(window, texture, color);
     }
 
     //Asteroids
@@ -82,6 +82,7 @@ void SolarSystem::draw(RenderWindow* window, Texture* texture)
             asteroidSprite.setOrigin(Vector2f(8, 8));
             asteroidSprite.setPosition(asteroidPos + position);
 
+            asteroidSprite.setColor(color);
             celShade(asteroidSprite, window, Color(0, 0, 0));
             window->draw(asteroidSprite);
         }

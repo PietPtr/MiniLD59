@@ -19,7 +19,7 @@ void Planet::update(Time dt)
     circulationPosition += circulationSpeed * dt.asSeconds();
 }
 
-void Planet::draw(RenderWindow* window, Texture* texture)
+void Planet::draw(RenderWindow* window, Texture* texture, Color color)
 {
     Sprite planetSprite;
     planetSprite.setTexture(*texture);
@@ -31,6 +31,7 @@ void Planet::draw(RenderWindow* window, Texture* texture)
     spritePos.y = spritePositions[(int)planetName].y;
 
     planetSprite.setTextureRect(IntRect(spritePos.x, spritePos.y, 16, 16));
+    planetSprite.setColor(color);
 
     celShade(planetSprite, window, Color(0, 0, 0));
     window->draw(planetSprite);

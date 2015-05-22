@@ -13,7 +13,7 @@ class Spaceship : public GameObject
     public:
         Spaceship(Ship _category, Vector2f position, float speed);
         void update(Time dt);
-        void draw(RenderWindow* window, Texture* texture);
+        void draw(RenderWindow* window, Texture* texture, Color color);
 
         Vector2f getPosition() { return position; }
     protected:

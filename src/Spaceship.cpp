@@ -61,7 +61,7 @@ void Spaceship::update(Time dt)
     //std::cout << fabs(velocity.x) << " <- X      " << fabs(velocity.y) << " <- Y\n";
 }
 
-void Spaceship::draw(RenderWindow* window, Texture* texture)
+void Spaceship::draw(RenderWindow* window, Texture* texture, Color color)
 {
     Sprite spaceShipSprite;
     spaceShipSprite.setOrigin(Vector2f(8, 8));
@@ -82,6 +82,7 @@ void Spaceship::draw(RenderWindow* window, Texture* texture)
         break;
     }
 
+    spaceShipSprite.setColor(color);
     celShade(spaceShipSprite, window, Color(0, 0, 0));
     window->draw(spaceShipSprite);
 }

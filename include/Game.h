@@ -4,6 +4,9 @@
 #include "Planet.h"
 #include "SolarSystem.h"
 
+#define GREEN Color(0, 200, 0)
+#define WHITE Color(255, 255, 255)
+
 using namespace sf;
 
 class Game
@@ -13,6 +16,7 @@ class Game
         void update();
         void draw();
         void drawText();
+        void drawBackground();
         void loadTextures();
         void drawTag(std::string text, Vector2f position, Color color);
         Time getTotalTime() { return totalTime; };
@@ -30,7 +34,8 @@ class Game
         Time dt;
         Time totalTime;
         View view;
-        bool displayHUD = false;
+        bool radar = false;
+        Color hudColor = radar ? GREEN : WHITE;
 
         std::vector <SolarSystem> systems;
 };

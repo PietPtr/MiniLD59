@@ -24,7 +24,7 @@ class Planet : public GameObject
 {
     public:
         Planet(float _circulationSpeed, float _radius, PlanetName _planetName, int _pullFactor, int _pushFactor);
-        void draw(RenderWindow* window, Texture* texture);
+        void draw(RenderWindow* window, Texture* texture, Color color);
         void update(Time dt);
         void setPosition(Vector2f value) { position = value; }
         float getRadius() { return radius; }

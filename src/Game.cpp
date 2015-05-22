@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
 
+#define GREEN Color(0, 200, 0)
+#define WHITE Color(255, 255, 255)
+
 using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
@@ -28,9 +31,9 @@ void Game::update()
             {
                 window->close();
             }
-            else if (event.key.code == Keyboard::Tab)
+            else if (event.key.code == Keyboard::Return)
             {
-                displayHUD = !displayHUD;
+                radar = !radar;
             }
         }
         if (event.type == Event::Resized)
@@ -45,6 +48,9 @@ void Game::update()
     //Time
     dt = clock.restart();
     totalTime += dt;
+
+    if (radar)
+        dt = seconds(dt.asSeconds() / 5);
 
     //Create systems
     int renderDistance = 1000;
@@ -151,7 +157,27 @@ void Game::draw()
 
     window->setView(view);
 
+    hudColor = radar ? GREEN : WHITE;
 
+    drawBackground();
+
+    //Draw all the objects
+    //testSystem.draw(window, &myTextureAtlas);
+    for (int i = 0; i < systems.size(); i++)
+    {
+        systems.at(i).draw(window, &myTextureAtlas, hudColor);
+    }
+    player.draw(window, &myTextureAtlas, hudColor);
+    //testPlanet.draw(window, &myTextureAtlas);
+
+    if (radar)
+        drawText();
+
+    window->display();
+}
+
+void Game::drawBackground()
+{
     //Draw the background
     Sprite background;
     background.setTexture(myTextureAtlas);
@@ -169,23 +195,10 @@ void Game::draw()
         {
             background.setTextureRect(IntRect(randint(0, 7, ((int)(y + topLeftTile.y / 16) % 4096 + 65536) * ((int)(x + topLeftTile.x / 16) % 4096 + 65536)) * 16, 64, 16, 16));
             background.setPosition(x * 16 + topLeftTile.x, y * 16 + topLeftTile.y);
+            background.setColor(hudColor);
             window->draw(background);
         }
     }
-
-    //Draw all the objects
-    //testSystem.draw(window, &myTextureAtlas);
-    for (int i = 0; i < systems.size(); i++)
-    {
-        systems.at(i).draw(window, &myTextureAtlas);
-    }
-    player.draw(window, &myTextureAtlas);
-    //testPlanet.draw(window, &myTextureAtlas);
-
-    if (displayHUD)
-        drawText();
-
-    window->display();
 }
 
 void Game::drawText()
@@ -193,7 +206,7 @@ void Game::drawText()
     for (int i = 0; i < systems.size(); i++)
     {
         std::string text = "X:" + std::to_string((int)systems.at(i).getPosition().x) + ", Y:" + std::to_string((int)systems.at(i).getPosition().y);
-        Vector2f drawPos(systems.at(i).getPosition().x + 25, systems.at(i).getPosition().y - 25);
+        Vector2f drawPos(systems.at(i).getPosition().x + 20, systems.at(i).getPosition().y - 20);
         drawTag(text, drawPos, Color(0, 255, 0, 128));
 
         std::vector<Planet>* planets = systems.at(i).getPlanets();
@@ -202,7 +215,7 @@ void Game::drawText()
             std::string text = "X:" + std::to_string((int)(planets->at(j).getPosition().x)) +
                                ", Y:" + std::to_string((int)(planets->at(j).getPosition().y));
             Vector2f drawPos(planets->at(j).getPosition().x + 10, planets->at(j).getPosition().y - 10);
-            drawTag(text, drawPos, Color(0, 255, 0, 128));
+            //drawTag(text, drawPos, Color(0, 255, 0, 128));
         }
     }
 
