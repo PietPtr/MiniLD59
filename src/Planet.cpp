@@ -109,7 +109,7 @@ std::string Planet::generatePlanetEntry()
             entry += base[i];
     }
 
-    return "'''''' don't isn't";
+    return entry;
 }
 
 
