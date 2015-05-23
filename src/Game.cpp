@@ -17,7 +17,18 @@ Game::Game(RenderWindow* _window)
 {
     window = _window;
     loadTextures();
-    loadTextFiles();
+
+    loadTextFile("text/names.txt", &baseNames);
+    loadTextFile("text/rockPlanets.txt", &rockPlanetSentences);
+    loadTextFile("text/traits.txt", &traits);
+    loadTextFile("text/adj.txt", &adjectives);
+    loadTextFile("text/people.txt", &people);
+
+    data.names = &baseNames;
+    data.rockPlanetSentences = &rockPlanetSentences;
+    data.traits = &traits;
+    data.adjectives = &adjectives;
+    data.people = &people;
     //myTextureAtlas.setSmooth(true);
 }
 
@@ -138,7 +149,7 @@ void Game::playState()
 
                 }
                 if (locationAvailable)
-                    systems.push_back(SolarSystem(Vector2f(newSystemPosition.x, newSystemPosition.y), &baseNames));
+                    systems.push_back(SolarSystem(Vector2f(newSystemPosition.x, newSystemPosition.y), &data));
             }
         }
     }
@@ -262,9 +273,9 @@ void Game::drawReadState()
     std::string name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
     std::string entry = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getEntry();
 
-    Vector2f maxEntrySize(500, 700);
+    Vector2f maxEntrySize(281, 394);
 
-    Vector2f textPos = Vector2f(player.getPosition().x - (maxEntrySize.x / 2 - 10), player.getPosition().y - (maxEntrySize.y / 2 - 50));
+    Vector2f textPos = Vector2f(player.getPosition().x - (maxEntrySize.x / 2 - 10), player.getPosition().y - (maxEntrySize.y / 2 - 10));
 
     int entryHeight = (totalTime.asMilliseconds() - gameStateTime.asMilliseconds()) * 3;
     entryHeight = entryHeight > maxEntrySize.y ? maxEntrySize.y : entryHeight;
@@ -297,7 +308,7 @@ void Game::drawReadState()
             stringToBeDrawn += entry[i];
         }
 
-        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 72);
+        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 36);
     }
 }
 
@@ -393,19 +404,19 @@ void Game::loadTextures()
         window->close();
 }
 
-void Game::loadTextFiles()
+void Game::loadTextFile(std::string filename, std::vector<std::string>* outputList)
 {
-    std::ifstream file("names.txt");
+    std::ifstream file(filename);
 
     while(!file.eof())
     {
-        for (int i = 0; i < 5; i++)
-        {
-            std::string name;
-            file >> name;
-            baseNames.push_back(name);
-        }
+        std::string line;
+        //file >> line;
+        std::getline(file, line);
+        outputList->push_back(line);
+
     }
+    std::cout << outputList->size() << " " << outputList->at(0) << "\n";
     file.close();
 }
 

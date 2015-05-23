@@ -62,6 +62,7 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
     int letterWidth = 5;
     int letterHeight = 7;
 
+    int charactersSinceNewline = 0;
     for (int i = 0; i < text.length(); i++)
     {
         int num = (int)(text[i]);
@@ -87,6 +88,11 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
             charSprite.setTextureRect(IntRect(66 * letterWidth, 0, letterWidth, letterHeight));
         else if (num == 45)
             charSprite.setTextureRect(IntRect(67 * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == 38)
+        {
+            shouldStartNewLine = true;
+            charSprite.setTextureRect(IntRect(66 * letterWidth, 0, letterWidth, letterHeight));
+        }
         else
             charSprite.setTextureRect(IntRect(65 * letterWidth, 0, letterWidth, letterHeight));
 
@@ -94,7 +100,9 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
         charSprite.setPosition(Vector2f(drawX, drawY));
         window->draw(charSprite);
 
-        if (newLine != -1 && i % newLine == 0 && i != 0)
+        charactersSinceNewline++;
+
+        if (newLine != -1 && charactersSinceNewline % newLine == 0 && i != 0)
         {
             shouldStartNewLine = true;
         }
@@ -103,6 +111,7 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
             shouldStartNewLine = false;
             drawY += letterHeight + 4;
             drawX = position.x;
+            charactersSinceNewline = 0;
         }
     }
 }

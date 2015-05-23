@@ -31,11 +31,19 @@ class Planet : public GameObject
         float getCirculationPosition() { return circulationPosition; }
         std::string generatePlanetEntry();
         std::string generatePlanetName(std::vector<std::string>* _baseNames);
+        std::string getName() { return name; }
+        std::string getEntry() { return entry; }
         Vector2f getPosition() { return position; }
         void setBaseNameptr(std::vector<std::string>* ptr) { baseNames = ptr; }
     protected:
     private:
-        Vector2f systemPosition; //Used in the seed for random text/name generation
+        Vector2f systemPosition; //Used in the seed for random text/name generationa 
+           awdsa     
+           
+            
+             
+              
+               
         Vector2f position;
         PlanetName planetName = (PlanetName)0;
 
@@ -56,9 +64,10 @@ class Planet : public GameObject
                                         Vector2f(32, 80),  //Saturn
                                         Vector2f(32, 96)}; //Neptune
 
-        int genSeed = (int)(systemPosition);
+        int genSeed = 0;
 
         std::string name = "NoNameAssigned";
+        std::string entry = "A SHORT WHILE LATER HE WAS RUNNING ACROSS THE PLAIN IN THE DIRECTION OF THE RUINED CITY. THE DANK AIR WHEEZED HEAVILY IN HIS LUNGS AND HE FREQUENTLY STUMBLED WITH THE EXHAUSTION HE WAS STILL FEELING. NIGHT WAS BEGINNING TO FALL TOO, AND THE ROUGH GROUND WAS TREACHEROUS. THE ELATION OF HIS RECENT EXPERIENCE WAS STILL WITH HIM THOUGH. THE WHOLE UNIVERSE. HE HAD SEEN THE WHOLE UNIVERSE STRETCHING TO INFINITY AROUND HIM - EVERYTHING. AND WITH IT HAD COME THE CLEAR AND EXTRAORDINARY KNOWLEDGE THAT HE WAS THE MOST IMPORTANT THING IN IT. HAVING A CONCEITED EGO IS ONE THING. ACTUALLY BEING TOLD BY A MACHINE IS ANOTHER. HE DID NOT HAVE TIME TO REFLECT ON THIS MATTER.";
         std::vector<std::string>* baseNames = nullptr;
 
 };

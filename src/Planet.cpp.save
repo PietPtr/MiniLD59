@@ -6,17 +6,19 @@
 using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
+int randint(int low, int high, int seed);
 
-Planet::Planet(float _circulationSpeed, float _radius, PlanetName _planetName, std::vector<std::string>* _baseNames, Vector2f _systemPos)
+Planet::Planet(float _circulationSpeed, float _radius, PlanetName _planetName, dataLists* _dataptr, Vector2f _systemPos)
 {
     circulationSpeed = _circulationSpeed;
     radius = _radius;
     planetName = _planetName;
-    baseNames = _baseNames;
+    dataptr = _dataptr;
     systemPosition = _systemPos;
     genSeed = (int)(systemPosition.x + systemPosition.y + radius);
 
-    name = generatePlanetName(baseNames);
+    name = generatePlanetName(dataptr->names);
+    entry = generatePlanetEntry();
 }
 
 void Planet::update(Time dt)
@@ -42,15 +44,9 @@ void Planet::draw(RenderWindow* window, Texture* texture, Color color)
     window->draw(planetSprite);
 }
 
-std::string Planet::generatePlanetEntry()
-{
-
-}
 
 std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
 {
-    std::cout << baseNames->at(0) << genSeed << "\n";
-
     int nameLength = randint(2, 5, genSeed);
 
     std::string romanNumerals[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
@@ -59,11 +55,43 @@ std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
 
     for (int i = 0; i < nameLength; i++)
     {
-        generatedName += (baseNames->at(randint(0, baseNames->size() - 1), genSeed) + " ");
+        std::string nameToAdd = baseNames->at(randint(0, baseNames->size() - 1, genSeed+i));
+        if (nameToAdd != "")
+            generatedName += nameToAdd + " ";
     }
-    
-    generatedName += romanNumerals[randint]
 
-    return "nameAssigned";
+    generatedName += romanNumerals[randint(0, 9, genSeed)];
+
+    return generatedName;
 }
+
+std::string Planet::generatePlanetEntry()
+{
+    std::string entry = "NOT GENERATED";
+    std::string base = "";
+    if (planetName <= (int)PLUTO)
+        base = dataptr->rockPlanetSentences->at(randint(0, dataptr->rockPlanetSentences->size() - 1, genSeed + ));
+
+    return base;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

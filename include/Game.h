@@ -3,6 +3,7 @@
 #include "Spaceship.h"
 #include "Planet.h"
 #include "SolarSystem.h"
+#include "dataLists.h"
 
 #define GREEN Color(0, 200, 0)
 #define WHITE Color(255, 255, 255)
@@ -15,6 +16,8 @@ enum GameState {
     PLAY,
     READ
 };
+
+
 
 class Game
 {
@@ -32,7 +35,7 @@ class Game
         void drawTag(std::string text, Vector2f position, Color color);
 
         void loadTextures();
-        void loadTextFiles();
+        void loadTextFile(std::string filename, std::vector<std::string>* outputList);
 
         float getDistance(Vector2f point1, Vector2f point2);
         Time getTotalTime() { return totalTime; };
@@ -62,4 +65,10 @@ class Game
 
         std::vector <SolarSystem> systems;
         std::vector <std::string> baseNames;
+        std::vector <std::string> rockPlanetSentences;
+        std::vector <std::string> traits;
+        std::vector <std::string> adjectives;
+        std::vector <std::string> people;
+
+        dataLists data;
 };

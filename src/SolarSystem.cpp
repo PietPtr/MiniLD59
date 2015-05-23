@@ -11,10 +11,10 @@ void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
 int randint(int low, int high, int seed);
 int randint(int low, int high);
 
-SolarSystem::SolarSystem(Vector2f _position, std::vector<std::string>* _baseNames)
+SolarSystem::SolarSystem(Vector2f _position, dataLists* _dataptr)
 {
     position = _position;
-    baseNames = _baseNames;
+    dataptr = _dataptr;
     generateSystem();
 }
 
@@ -125,7 +125,7 @@ void SolarSystem::generateNear(int genSeed, int minPlanets, int maxPlanets)
     int amountOfNearPlanets = randint(minPlanets, maxPlanets, genSeed*3);
     for (int i = 1; i <= amountOfNearPlanets; i++)
     {
-        planets.push_back(Planet(randint(2500, 8000, genSeed*i*4) / 5000.0f, i * randint(19, 25, genSeed*i*5), (PlanetName)(randint(0, 4, genSeed*i*7)), baseNames, position));
+        planets.push_back(Planet(randint(2500, 8000, genSeed*i*4) / 5000.0f, i * randint(19, 25, genSeed*i*5), (PlanetName)(randint(0, 4, genSeed*i*7)), dataptr, position));
     }
 
 }
@@ -136,6 +136,6 @@ void SolarSystem::generateGas(int genSeed)
     int amountOfNearPlanets = planets.size();
     for (int i = 1; i <= amountOfGasPlanets; i++)
     {
-        planets.push_back(Planet(randint(100, 600, genSeed*i*4) / 5000.0f, planets.at(amountOfNearPlanets - 1).getRadius() + i * randint(105, 195, genSeed*i*5), (PlanetName)(randint(5, 7, genSeed*i*6)), baseNames, position));
+        planets.push_back(Planet(randint(100, 600, genSeed*i*4) / 5000.0f, planets.at(amountOfNearPlanets - 1).getRadius() + i * randint(105, 195, genSeed*i*5), (PlanetName)(randint(5, 7, genSeed*i*6)), dataptr, position));
     }
 }

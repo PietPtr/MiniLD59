@@ -1,0 +1,12 @@
+#ifndef DATALISTS_H_INCLUDED
+#define DATALISTS_H_INCLUDED
+
+struct dataLists {
+    std::vector<std::string>* names;
+    std::vector<std::string>* rockPlanetSentences;
+    std::vector<std::string>* traits;
+    std::vector<std::string>* adjectives;
+    std::vector<std::string>* people;
+};
+
+#endif // DATALISTS_H_INCLUDED

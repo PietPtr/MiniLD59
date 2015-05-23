@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "dataLists.h"
 
 using namespace sf;
 
@@ -15,7 +16,7 @@ enum StarType
 class SolarSystem
 {
     public:
-        SolarSystem(Vector2f _position, std::vector<std::string>* _baseNames);
+        SolarSystem(Vector2f _position, dataLists* _dataptr);
         void update(Time dt);
         void draw(RenderWindow* window, Texture* texture, Color color);
         void generateSystem();
@@ -23,8 +24,6 @@ class SolarSystem
         void generateGas(int genSeed);
         Vector2f getPosition() { return position; }
         std::vector<Planet>* getPlanets() { return &planets; }
-
-        void setBaseNameptr(std::vector<std::string>* ptr) { baseNames = ptr; }
 
     protected:
     private:
@@ -36,7 +35,7 @@ class SolarSystem
         float asteroidRotation = 0.1;
         float asteroidSpeed = 0.1;
 
-        std::vector<std::string>* baseNames;
+        dataLists* dataptr;
 
 
 };
