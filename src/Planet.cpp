@@ -67,14 +67,16 @@ std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
 
 std::string Planet::generatePlanetEntry()
 {
-    std::string entry = "NOT GENERATED";
+    std::string entry = "";
     std::string base = "";
     if (planetName == MERCURIUS || planetName == VENUS || planetName == EARTH || planetName == MARS || planetName == PLUTO)
         base = dataptr->rockPlanetSentences->at(randint(0, dataptr->rockPlanetSentences->size() - 1, genSeed));
     else
         base = name;
 
-    return name + "& & " + std::to_string(planetName);
+    entry += name + "& & ";
+
+    return entry;
 }
 
 

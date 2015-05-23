@@ -23,12 +23,14 @@ Game::Game(RenderWindow* _window)
     loadTextFile("text/traits.txt", &traits);
     loadTextFile("text/adj.txt", &adjectives);
     loadTextFile("text/people.txt", &people);
-    
+    loadTextFile("text/nouns.txt", &nouns);
+
     data.names = &baseNames;
     data.rockPlanetSentences = &rockPlanetSentences;
     data.traits = &traits;
     data.adjectives = &adjectives;
-    data.people
+    data.people = &people;
+    data.nouns = &
     //myTextureAtlas.setSmooth(true);
 }
 
@@ -149,7 +151,7 @@ void Game::playState()
 
                 }
                 if (locationAvailable)
-                    systems.push_back(SolarSystem(Vector2f(newSystemPosition.x, newSystemPosition.y), &baseNames));
+                    systems.push_back(SolarSystem(Vector2f(newSystemPosition.x, newSystemPosition.y), &data));
             }
         }
     }
@@ -273,7 +275,7 @@ void Game::drawReadState()
     std::string name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
     std::string entry = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getEntry();
 
-    Vector2f maxEntrySize(250, 350);
+    Vector2f maxEntrySize(281, 394);
 
     Vector2f textPos = Vector2f(player.getPosition().x - (maxEntrySize.x / 2 - 10), player.getPosition().y - (maxEntrySize.y / 2 - 10));
 
@@ -308,7 +310,7 @@ void Game::drawReadState()
             stringToBeDrawn += entry[i];
         }
 
-        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 30);
+        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 36);
     }
 }
 
@@ -373,13 +375,12 @@ void Game::drawHUD()
     entryPopupPos = Vector2f(2 ^ 32, 0);
     for (int j = 0; j < systems.size(); j++)
     {
-        entrySystemIndex = j;
-
         std::vector<Planet>* planets = systems.at(j).getPlanets();
         for (int i = 0; i < planets->size(); i++)
         {
             if (getDistance(planets->at(i).getPosition(), player.getPosition()) < 15)
             {
+                entrySystemIndex = j;
                 entryPlanetIndex = i;
                 entryPopupPos = planets->at(i).getPosition();
             }

@@ -20,14 +20,17 @@ Game::Game(RenderWindow* _window)
 
     loadTextFile("text/names.txt", &baseNames);
     loadTextFile("text/rockPlanets.txt", &rockPlanetSentences);
+    loadTextFile("text/gasPlanets.txt", &gasPlanetSentences);
     loadTextFile("text/traits.txt", &traits);
     loadTextFile("text/adj.txt", &adjectives);
     loadTextFile("text/people.txt", &people);
+    loadTextFile("text/nouns.txt", &nouns);
 
     data.names = &baseNames;
     data.rockPlanetSentences = &rockPlanetSentences;
     data.traits = &traits;
     data.adjectives = &adjectives;
+    data.nouns = &nouns;
     data.people = &people;
     //myTextureAtlas.setSmooth(true);
 }

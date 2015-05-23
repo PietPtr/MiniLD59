@@ -4,8 +4,10 @@
 struct dataLists {
     std::vector<std::string>* names;
     std::vector<std::string>* rockPlanetSentences;
+    std::vector<std::string>* gasPlanetSentences;
     std::vector<std::string>* traits;
     std::vector<std::string>* adjectives;
+    std::vector<std::string>* nouns;
     std::vector<std::string>* people;
 };
 
