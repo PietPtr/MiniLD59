@@ -373,13 +373,12 @@ void Game::drawHUD()
     entryPopupPos = Vector2f(2 ^ 32, 0);
     for (int j = 0; j < systems.size(); j++)
     {
-        entrySystemIndex = j;
-
         std::vector<Planet>* planets = systems.at(j).getPlanets();
         for (int i = 0; i < planets->size(); i++)
         {
             if (getDistance(planets->at(i).getPosition(), player.getPosition()) < 15)
             {
+                entrySystemIndex = j;
                 entryPlanetIndex = i;
                 entryPopupPos = planets->at(i).getPosition();
             }

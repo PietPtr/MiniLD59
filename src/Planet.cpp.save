@@ -47,7 +47,7 @@ void Planet::draw(RenderWindow* window, Texture* texture, Color color)
 
 std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
 {
-    int nameLength = randint(2, 5, genSeed);
+    int nameLength = randint(1, 4, genSeed);
 
     std::string romanNumerals[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
 
@@ -69,10 +69,10 @@ std::string Planet::generatePlanetEntry()
 {
     std::string entry = "NOT GENERATED";
     std::string base = "";
-    if (planetName <= (int)PLUTO)
-        base = dataptr->rockPlanetSentences->at(randint(0, dataptr->rockPlanetSentences->size() - 1, genSeed + ));
+    if (pl)
+        base = dataptr->rockPlanetSentences->at(randint(0, dataptr->rockPlanetSentences->size() - 1, genSeed));
 
-    return base;
+    return name + "& & " + base;
 }
 
 

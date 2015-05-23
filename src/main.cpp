@@ -115,8 +115,3 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
         }
     }
 }
-
-std::string floatToString(float flt)
-{
-
-}
