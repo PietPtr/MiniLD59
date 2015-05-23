@@ -35,7 +35,7 @@ void Game::update()
             {
                 window->close();
             }
-            else if (event.key.code == Keyboard::Return)
+            else if (event.key.code == Keyboard::Return && gameState == PLAY)
             {
                 if (radar)
                 {
@@ -259,19 +259,46 @@ void Game::drawReadState()
     //draw text generated from planet
     //drawString(window, "IN THE BEGINNING, THE UNIVERSE WAS CREATED. THIS HAS MADE A LOT OF PEOPLE VERY ANGRY AND HAS BEEN WIDELY REGARDED AS A BAD MOVE.", player.getPosition(), &fontTexture, Color(0, 200,0),  50);
 
+    std::string name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
+    std::string entry = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getEntry();
+
     Vector2f maxEntrySize(500, 700);
-    int entryHeight = (totalTime.asMilliseconds() - gameStateTime.asMilliseconds()) * 5;
+
+    Vector2f textPos = Vector2f(player.getPosition().x - (maxEntrySize.x / 2 - 10), player.getPosition().y - (maxEntrySize.y / 2 - 50));
+
+    int entryHeight = (totalTime.asMilliseconds() - gameStateTime.asMilliseconds()) * 3;
     entryHeight = entryHeight > maxEntrySize.y ? maxEntrySize.y : entryHeight;
-    RectangleShape bgRect(Vector2f(500, entryHeight));
+    RectangleShape bgRect(Vector2f(maxEntrySize.x, entryHeight));
     bgRect.setOutlineColor(Color(0, 200, 0));
     bgRect.setOutlineThickness(1);
     bgRect.setFillColor(Color(0, 0, 0, 192));
     bgRect.setOrigin(bgRect.getSize().x / 2, bgRect.getSize().y / 2);
     bgRect.setPosition(player.getPosition());
     window->draw(bgRect);
+    RectangleShape doubleBorder(Vector2f(maxEntrySize.x - 4, entryHeight - 4));
+    doubleBorder.setOutlineColor(Color(0, 200, 0));
+    doubleBorder.setOutlineThickness(1);
+    doubleBorder.setFillColor(Color(0, 0, 0, 0));
+    doubleBorder.setOrigin(doubleBorder.getSize().x / 2, doubleBorder.getSize().y / 2);
+    doubleBorder.setPosition(player.getPosition());
+    window->draw(doubleBorder);
 
     //display system[systenentryindex].planets[planetindex].gettext
-    drawString(window, systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName(), player.getPosition(), &fontTexture, Color(0, 200, 0), 100);
+    //drawString(window, name, player.getPosition(), &fontTexture, Color(0, 200, 0), 100);
+
+    if (totalTime.asMilliseconds() - gameStateTime.asMilliseconds() > 250)
+    {
+        std::string stringToBeDrawn = "";
+
+        int typedLetters = (int)((totalTime.asMilliseconds() - gameStateTime.asMilliseconds()) / 5);
+        typedLetters = typedLetters > entry.size() ? entry.size() : typedLetters;
+        for (int i = 0; i < typedLetters; i++)
+        {
+            stringToBeDrawn += entry[i];
+        }
+
+        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 72);
+    }
 }
 
 void Game::drawText()

@@ -58,12 +58,12 @@ std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
 
     for (int i = 0; i < nameLength; i++)
     {
-        generatedName += (baseNames->at(randint(0, baseNames->size() - 1, genSeed+i)) + " ");
+        std::string nameToAdd = baseNames->at(randint(0, baseNames->size() - 1, genSeed+i));
+        if (nameToAdd != "")
+            generatedName += nameToAdd + " ";
     }
 
     generatedName += romanNumerals[randint(0, 9, genSeed)];
-
-    std::cout << generatedName << "\n";
 
     return generatedName;
 }
