@@ -1,28 +1,34 @@
 #include "Planet.h"
 #include <iostream>
+#include <string>
+#include <fstream>
 
 using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
 
-Planet::Planet(int _circulationSpeed, float _radius, PlanetName _planetName, int _pullFactor, int _pushFactor)
+Planet::Planet(float _circulationSpeed, float _radius, PlanetName _planetName, std::vector<std::string>* _baseNames, Vector2f _systemPos)
 {
     circulationSpeed = _circulationSpeed;
     radius = _radius;
     planetName = _planetName;
-    pullFactor = _pullFactor;
-    pushFactor = _pushFactor;
+    baseNames = _baseNames;
+    systemPosition = _systemPos;
+    genSeed = (int)(systemPosition.x + systemPosition.y + radius);
+
+    name = generatePlanetName(baseNames);
 }
 
 void Planet::update(Time dt)
 {
-    circulationPosition += sp
+    circulationPosition += circulationSpeed * dt.asSeconds();
 }
 
-void Planet::draw(RenderWindow* window, Texture* texture)
+void Planet::draw(RenderWindow* window, Texture* texture, Color color)
 {
     Sprite planetSprite;
     planetSprite.setTexture(*texture);
+    planetSprite.setOrigin(Vector2f(8, 8));
     planetSprite.setPosition(position);
 
     Vector2f spritePos;// = Vector2f(spritePositions[(int)planetName].x, spritePositions[(int)planetName].y);
@@ -30,8 +36,34 @@ void Planet::draw(RenderWindow* window, Texture* texture)
     spritePos.y = spritePositions[(int)planetName].y;
 
     planetSprite.setTextureRect(IntRect(spritePos.x, spritePos.y, 16, 16));
+    planetSprite.setColor(color);
 
     celShade(planetSprite, window, Color(0, 0, 0));
     window->draw(planetSprite);
+}
+
+std::string Planet::generatePlanetEntry()
+{
+
+}
+
+std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
+{
+    std::cout << baseNames->at(0) << genSeed << "\n";
+
+    int nameLength = randint(2, 5, genSeed);
+
+    std::string romanNumerals[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+
+    std::string generatedName = "";
+
+    for (int i = 0; i < nameLength; i++)
+    {
+        generatedName += (baseNames->at(randint(0, baseNames->size() - 1), genSeed) + " ");
+    }
+    
+    generatedName += romanNumerals[randint]
+
+    return "nameAssigned";
 }
 

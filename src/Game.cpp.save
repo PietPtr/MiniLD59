@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
+#include <fstream>
 #include "Game.h"
 
 #define GREEN Color(0, 200, 0)
@@ -8,12 +11,13 @@ using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
 int randint(int low, int high, int seed);
-void drawString(RenderWindow* window, std::string text, Vector2f position, Texture* fontTexture, Color color);
+void drawString(RenderWindow* window, std::string text, Vector2f position, Texture* fontTexture, Color color, int newLine);
 
 Game::Game(RenderWindow* _window)
 {
     window = _window;
     loadTextures();
+    loadTextFiles();
     //myTextureAtlas.setSmooth(true);
 }
 
@@ -49,6 +53,16 @@ void Game::update()
                     useTexture = &someonesTextureAtlas;
                 else if (useTexture == &someonesTextureAtlas)
                     useTexture = &myTextureAtlas;
+            }
+            else if (event.key.code == Keyboard::Space && gameState == PLAY && getDistance(entryPopupPos, player.getPosition()) < 15)
+            {
+                gameState = READ;
+                gameStateTime = totalTime;
+            }
+            else if (event.key.code == Keyboard::Space && gameState == READ)
+            {
+                gameState = PLAY;
+                gameStateTime = totalTime;
             }
         }
         if (event.type == Event::Resized)
@@ -124,7 +138,7 @@ void Game::playState()
 
                 }
                 if (locationAvailable)
-                    systems.push_back(SolarSystem(Vector2f(newSystemPosition.x, newSystemPosition.y)));
+                    systems.push_back(SolarSystem(Vector2f(newSystemPosition.x, newSystemPosition.y), &baseNames));
             }
         }
     }
@@ -208,8 +222,7 @@ void Game::draw()
     }
     if (gameState == READ && gameState != PLAY)
     {
-        //draw rectangle
-        //draw text generated from planet
+        drawReadState();
     }
 
     window->display();
@@ -228,7 +241,7 @@ void Game::drawBackground()
     topLeftTile.y = (int)(player.getPosition().y - windowHeight / 2.0f);
     topLeftTile.y = topLeftTile.y - (int)topLeftTile.y % 16 - 16;
 
-    for (int y = -2; y < (int)(windowHeight / 16.0) + 3; y++)
+    for (int y = -3; y < (int)(windowHeight / 16.0) + 3; y++)
     {
         for (int x = -3; x < (int)(windowWidth / 16.0) + 3; x++)
         {
@@ -238,6 +251,27 @@ void Game::drawBackground()
             window->draw(background);
         }
     }
+}
+
+void Game::drawReadState()
+{
+    //draw rectangle
+    //draw text generated from planet
+    //drawString(window, "IN THE BEGINNING, THE UNIVERSE WAS CREATED. THIS HAS MADE A LOT OF PEOPLE VERY ANGRY AND HAS BEEN WIDELY REGARDED AS A BAD MOVE.", player.getPosition(), &fontTexture, Color(0, 200,0),  50);
+
+    Vector2f maxEntrySize(500, 700);
+    int entryHeight = (totalTime.asMilliseconds() - gameStateTime.asMilliseconds()) * 5;
+    entryHeight = entryHeight > maxEntrySize.y ? maxEntrySize.y : entryHeight;
+    RectangleShape bgRect(Vector2f(500, entryHeight));
+    bgRect.setOutlineColor(Color(0, 200, 0));
+    bgRect.setOutlineThickness(1);
+    bgRect.setFillColor(Color(0, 0, 0, 192));
+    bgRect.setOrigin(bgRect.getSize().x / 2, bgRect.getSize().y / 2);
+    bgRect.setPosition(player.getPosition());
+    window->draw(bgRect);
+
+    //display system[systenentryindex].planets[planetindex].gettext
+    drawString(window, systems.at(entrySystemIndex).getPlanets->at(entryPlanetIndex).get
 }
 
 void Game::drawText()
@@ -264,16 +298,6 @@ void Game::drawText()
     drawTag(text, drawPos, Color(0, 255, 0, 128));
 }
 
-void Game::loadTextures()
-{
-    if (!myTextureAtlas.loadFromFile("dontReplaceThis.png"))
-        window->close();
-    if (!someonesTextureAtlas.loadFromFile("replaceThis.png"))
-        window->close();
-    if (!fontTexture.loadFromFile("font.png"))
-        window->close();
-}
-
 void Game::drawTag(std::string text, Vector2f position, Color color)
 {
     RectangleShape bg(Vector2f(text.length() * 6 + 3, 7 + 4));
@@ -284,7 +308,7 @@ void Game::drawTag(std::string text, Vector2f position, Color color)
     window->draw(bg);
 
     Vector2f textPos((int)(position.x), (int)(position.y));
-    drawString(window, text, textPos, &fontTexture, color);
+    drawString(window, text, textPos, &fontTexture, color, -1);
 }
 
 void Game::drawHUD()
@@ -308,9 +332,11 @@ void Game::drawHUD()
     radarRadius = radarRadius > maxRadius ? 0 : radarRadius + 4;
 
     //planet guide entry popup
-    Vector2f entryPopupPos(2 ^ 32, 0);
+    entryPopupPos = Vector2f(2 ^ 32, 0);
     for (int j = 0; j < systems.size(); j++)
     {
+        entrySystemIndex = j;
+
         if (getDistance(systems.at(j).getPosition(), player.getPosition()) < 15)
         {
              entryPopupPos = systems.at(j).getPosition();
@@ -321,6 +347,7 @@ void Game::drawHUD()
         {
             if (getDistance(planets->at(i).getPosition(), player.getPosition()) < 15)
             {
+                entryPlanetIndex = i;
                 entryPopupPos = planets->at(i).getPosition();
             }
         }
@@ -330,7 +357,34 @@ void Game::drawHUD()
     entryPopup.setColor(Color(0, 200, 0));
     entryPopup.setTexture(*useTexture);
     entryPopup.setTextureRect(IntRect(0, 48, 16, 16));
+    celShade(entryPopup, window, Color(0, 0, 0));
     window->draw(entryPopup);
+}
+
+void Game::loadTextures()
+{
+    if (!myTextureAtlas.loadFromFile("dontReplaceThis.png"))
+        window->close();
+    if (!someonesTextureAtlas.loadFromFile("replaceThis.png"))
+        window->close();
+    if (!fontTexture.loadFromFile("font.png"))
+        window->close();
+}
+
+void Game::loadTextFiles()
+{
+    std::ifstream file("names.txt");
+
+    while(!file.eof())
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            std::string name;
+            file >> name;
+            baseNames.push_back(name);
+        }
+    }
+    file.close();
 }
 
 float Game::getDistance(Vector2f point1, Vector2f point2)

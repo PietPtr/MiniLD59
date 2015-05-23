@@ -23,15 +23,19 @@ enum PlanetName
 class Planet : public GameObject
 {
     public:
-        Planet(float _circulationSpeed, float _radius, PlanetName _planetName, int _pullFactor, int _pushFactor);
-        void draw(RenderWindow* window, Texture* texture);
+        Planet(float _circulationSpeed, float _radius, PlanetName _planetName, std::vector<std::string>* _baseNames, Vector2f _systemPos);
+        void draw(RenderWindow* window, Texture* texture, Color color);
         void update(Time dt);
         void setPosition(Vector2f value) { position = value; }
         float getRadius() { return radius; }
         float getCirculationPosition() { return circulationPosition; }
-        Vector2f 
+        std::string generatePlanetEntry();
+        std::string generatePlanetName(std::vector<std::string>* _baseNames);
+        Vector2f getPosition() { return position; }
+        void setBaseNameptr(std::vector<std::string>* ptr) { baseNames = ptr; }
     protected:
     private:
+        Vector2f systemPosition; //Used in the seed for random text/name generation
         Vector2f position;
         PlanetName planetName = (PlanetName)0;
 
@@ -51,6 +55,11 @@ class Planet : public GameObject
                                         Vector2f(48, 80),  //Jupiter
                                         Vector2f(32, 80),  //Saturn
                                         Vector2f(32, 96)}; //Neptune
+
+        int genSeed = (int)(systemPosition);
+
+        std::string name = "NoNameAssigned";
+        std::vector<std::string>* baseNames = nullptr;
 
 };
 

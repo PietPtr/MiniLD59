@@ -1,17 +1,23 @@
 #include "Planet.h"
 #include <iostream>
+#include <string>
+#include <fstream>
 
 using namespace sf;
 
 void celShade(Sprite sprite, RenderWindow* window, Color shadeColor);
+int randint(int low, int high, int seed);
 
-Planet::Planet(float _circulationSpeed, float _radius, PlanetName _planetName, int _pullFactor, int _pushFactor)
+Planet::Planet(float _circulationSpeed, float _radius, PlanetName _planetName, std::vector<std::string>* _baseNames, Vector2f _systemPos)
 {
     circulationSpeed = _circulationSpeed;
     radius = _radius;
     planetName = _planetName;
-    pullFactor = _pullFactor;
-    pushFactor = _pushFactor;
+    baseNames = _baseNames;
+    systemPosition = _systemPos;
+    genSeed = (int)(systemPosition.x + systemPosition.y + radius);
+
+    name = generatePlanetName(baseNames);
 }
 
 void Planet::update(Time dt)
@@ -35,5 +41,30 @@ void Planet::draw(RenderWindow* window, Texture* texture, Color color)
 
     celShade(planetSprite, window, Color(0, 0, 0));
     window->draw(planetSprite);
+}
+
+std::string Planet::generatePlanetEntry()
+{
+
+}
+
+std::string Planet::generatePlanetName(std::vector<std::string>* baseNames)
+{
+    int nameLength = randint(2, 5, genSeed);
+
+    std::string romanNumerals[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+
+    std::string generatedName = "";
+
+    for (int i = 0; i < nameLength; i++)
+    {
+        generatedName += (baseNames->at(randint(0, baseNames->size() - 1, genSeed+i)) + " ");
+    }
+
+    generatedName += romanNumerals[randint(0, 9, genSeed)];
+
+    std::cout << generatedName << "\n";
+
+    return generatedName;
 }
 

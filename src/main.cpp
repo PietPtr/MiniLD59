@@ -52,8 +52,10 @@ int randint(int low, int high)
     return value;
 }
 
-void drawString(RenderWindow* window, std::string text, Vector2f position, Texture* fontTexture, Color color)
+void drawString(RenderWindow* window, std::string text, Vector2f position, Texture* fontTexture, Color color, int newLine)
 {
+    bool shouldStartNewLine = false;
+
     int drawY = position.y;
     int drawX = position.x;
 
@@ -91,6 +93,17 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
         charSprite.setColor(color);
         charSprite.setPosition(Vector2f(drawX, drawY));
         window->draw(charSprite);
+
+        if (newLine != -1 && i % newLine == 0 && i != 0)
+        {
+            shouldStartNewLine = true;
+        }
+        if (shouldStartNewLine && num == 32)
+        {
+            shouldStartNewLine = false;
+            drawY += letterHeight + 4;
+            drawX = position.x;
+        }
     }
 }
 

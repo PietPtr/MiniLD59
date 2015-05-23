@@ -15,7 +15,7 @@ enum StarType
 class SolarSystem
 {
     public:
-        SolarSystem(Vector2f _position);
+        SolarSystem(Vector2f _position, std::vector<std::string>* _baseNames);
         void update(Time dt);
         void draw(RenderWindow* window, Texture* texture, Color color);
         void generateSystem();
@@ -23,6 +23,9 @@ class SolarSystem
         void generateGas(int genSeed);
         Vector2f getPosition() { return position; }
         std::vector<Planet>* getPlanets() { return &planets; }
+
+        void setBaseNameptr(std::vector<std::string>* ptr) { baseNames = ptr; }
+
     protected:
     private:
         std::vector<Planet> planets;
@@ -32,6 +35,9 @@ class SolarSystem
         int asteroidBelt = 0;               //0: no belt, > 0: radius of asteroid belt
         float asteroidRotation = 0.1;
         float asteroidSpeed = 0.1;
+
+        std::vector<std::string>* baseNames;
+
 
 };
 

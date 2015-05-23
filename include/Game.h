@@ -9,6 +9,8 @@
 
 using namespace sf;
 
+int randint(int low, int high, int seed);
+
 enum GameState {
     PLAY,
     READ
@@ -26,8 +28,12 @@ class Game
         void drawText();
         void drawBackground();
         void drawHUD();
-        void loadTextures();
+        void drawReadState();
         void drawTag(std::string text, Vector2f position, Color color);
+
+        void loadTextures();
+        void loadTextFiles();
+
         float getDistance(Vector2f point1, Vector2f point2);
         Time getTotalTime() { return totalTime; };
     protected:
@@ -44,11 +50,16 @@ class Game
         Clock clock;
         Time dt;
         Time totalTime;
+        Time gameStateTime; //Time at which the new gamestate started
         View view;
         bool radar = false;
         int radarRadius = 0;
         Color hudColor = radar ? GREEN : WHITE;
         GameState gameState = PLAY;
+        Vector2f entryPopupPos {2 ^ 32, 0};
+        int entrySystemIndex = -1;
+        int entryPlanetIndex = -1;
 
         std::vector <SolarSystem> systems;
+        std::vector <std::string> baseNames;
 };
