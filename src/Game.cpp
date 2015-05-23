@@ -28,6 +28,7 @@ Game::Game(RenderWindow* _window)
 
     data.names = &baseNames;
     data.rockPlanetSentences = &rockPlanetSentences;
+    data.gasPlanetSentences = &gasPlanetSentences;
     data.traits = &traits;
     data.adjectives = &adjectives;
     data.nouns = &nouns;
@@ -413,9 +414,9 @@ void Game::loadTextFile(std::string filename, std::vector<std::string>* outputLi
     while(!file.eof())
     {
         std::string line;
-        //file >> line;
         std::getline(file, line);
-        outputList->push_back(line);
+        if (line != "")
+            outputList->push_back(line);
 
     }
     std::cout << outputList->size() << " " << outputList->at(0) << "\n";

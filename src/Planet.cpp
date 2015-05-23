@@ -72,9 +72,42 @@ std::string Planet::generatePlanetEntry()
     if (planetName == MERCURIUS || planetName == VENUS || planetName == EARTH || planetName == MARS || planetName == PLUTO)
         base = dataptr->rockPlanetSentences->at(randint(0, dataptr->rockPlanetSentences->size() - 1, genSeed));
     else
-        base = name;
+        base = dataptr->gasPlanetSentences->at(randint(0, dataptr->gasPlanetSentences->size() - 1, genSeed));
 
-    entry += name + "& & ";
+    entry += name + "& & ";// + base;
+
+    std::string variable;
+    bool recordVariable = false;
+    //bool addLetterFromBase = true;
+
+    for (int i = 0; i < base.length(); i++)
+    {
+        if (base[i] == '$')
+            recordVariable = true;
+        if (base[i] == ' ' || base[i] == ',' || base[i] == '.')
+        {
+            recordVariable = false;
+            std::cout << "'" << variable << "'\n";
+
+            if (variable == "$NAME")
+                entry += name;
+            else if (variable == "$ADJ")
+                entry += dataptr->adjectives->at(randint(0, dataptr->adjectives->size() - 1, genSeed+i));
+            else if (variable == "$TRAIT")
+                entry += dataptr->traits->at(randint(0, dataptr->traits->size() - 1, genSeed+i));
+            else if (variable == "$NOUN")
+                entry += dataptr->nouns->at(randint(0, dataptr->nouns->size() - 1, genSeed+i));
+            else if (variable == "$PEOPLE")
+                entry += dataptr->people->at(randint(0, dataptr->people->size() - 1, genSeed+i));
+
+            variable = "";
+        }
+
+        if (recordVariable)
+            variable += base[i];
+        else
+            entry += base[i];
+    }
 
     return entry;
 }
