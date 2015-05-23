@@ -211,7 +211,6 @@ void Game::draw()
         //draw rectangle
         //draw text generated from planet
     }
-}
 
     window->display();
 }
@@ -229,9 +228,9 @@ void Game::drawBackground()
     topLeftTile.y = (int)(player.getPosition().y - windowHeight / 2.0f);
     topLeftTile.y = topLeftTile.y - (int)topLeftTile.y % 16 - 16;
 
-    for (int y = 0; y < (int)(windowHeight / 16.0) + 3; y++)
+    for (int y = -3; y < (int)(windowHeight / 16.0) + 3; y++)
     {
-        for (int x = 0; x < (int)(windowWidth / 16.0) + 3; x++)
+        for (int x = -3; x < (int)(windowWidth / 16.0) + 3; x++)
         {
             background.setTextureRect(IntRect(randint(0, 7, ((int)(y + topLeftTile.y / 16) % 4096 + 65536) * ((int)(x + topLeftTile.x / 16) % 4096 + 65536)) * 16, 64, 16, 16));
             background.setPosition(x * 16 + topLeftTile.x, y * 16 + topLeftTile.y);
@@ -331,6 +330,7 @@ void Game::drawHUD()
     entryPopup.setColor(Color(0, 200, 0));
     entryPopup.setTexture(*useTexture);
     entryPopup.setTextureRect(IntRect(0, 48, 16, 16));
+    celShade(entryPopup, window, Color(0, 0, 0));
     window->draw(entryPopup);
 }
 
