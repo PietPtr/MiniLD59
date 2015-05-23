@@ -415,7 +415,7 @@ void Game::loadTextFile(std::string filename, std::vector<std::string>* outputLi
     {
         std::string line;
         std::getline(file, line);
-        if (line != "")
+        if (line.length() > 1)
             outputList->push_back(line);
 
     }

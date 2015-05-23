@@ -88,6 +88,8 @@ void drawString(RenderWindow* window, std::string text, Vector2f position, Textu
             charSprite.setTextureRect(IntRect(66 * letterWidth, 0, letterWidth, letterHeight));
         else if (num == 45)
             charSprite.setTextureRect(IntRect(67 * letterWidth, 0, letterWidth, letterHeight));
+        else if (num == 39)
+            charSprite.setTextureRect(IntRect(68 * letterWidth, 0, letterWidth, letterHeight));
         else if (num == 38)
         {
             shouldStartNewLine = true;

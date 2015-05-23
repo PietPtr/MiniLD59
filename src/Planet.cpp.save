@@ -98,7 +98,7 @@ std::string Planet::generatePlanetEntry()
             else if (variable == "$NOUN")
                 entry += dataptr->nouns->at(randint(0, dataptr->nouns->size() - 1, genSeed+i));
             else if (variable == "$PEOPLE")
-                entry += dataptr->nouns->at(randint(0, dataptr->nouns->size() - 1, genSeed+i));
+                entry += dataptr->people->at(randint(0, dataptr->people->size() - 1, genSeed+i));
 
             variable = "";
         }
@@ -109,7 +109,7 @@ std::string Planet::generatePlanetEntry()
             entry += base[i];
     }
 
-    return entry;
+    return "'''''' don't isn't";
 }
 
 
