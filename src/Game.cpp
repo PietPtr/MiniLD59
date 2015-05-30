@@ -40,6 +40,7 @@ Game::Game(RenderWindow* _window)
 
 void Game::initialize()
 {
+    backgroundMusic.setLoop(true);
     backgroundMusic.play();
 }
 
@@ -90,6 +91,13 @@ void Game::update()
             {
                 gameState = PLAY;
                 gameStateTime = totalTime;
+            }
+            else if (event.key.code == Keyboard::M)
+            {
+                if (backgroundMusic.getStatus() == Music::Playing)
+                    backgroundMusic.pause();
+                else if (backgroundMusic.getStatus() == Music::Paused)
+                    backgroundMusic.play();
             }
         }
         if (event.type == Event::Resized)

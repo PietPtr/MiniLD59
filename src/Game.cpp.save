@@ -36,11 +36,13 @@ Game::Game(RenderWindow* _window)
     data.nouns = &nouns;
     data.people = &people;
     //myTextureAtlas.setSmooth(true);
-
-    backgroundMusic.play();
 }
 
 void Game::initialize()
+{
+    backgroundMusic.setLoop(true);
+    backgroundMusic.play();
+}
 
 void Game::update()
 {
@@ -90,6 +92,9 @@ void Game::update()
                 gameState = PLAY;
                 gameStateTime = totalTime;
             }
+            else if (event.key.code == Keyboard::M && backgroundMusic.getStatus() == Music::Playing})
+                backgroundMusic.pause();
+            else if (event)
         }
         if (event.type == Event::Resized)
         {
@@ -436,7 +441,7 @@ void Game::loadTextures()
 
 void Game::loadMusic()
 {
-    if (!backgroundMusic.openFromFile("Launchpad.mp3"))
+    if (!backgroundMusic.openFromFile("Launchpad.ogg"))
         window->close();
 }
 
