@@ -3,6 +3,7 @@
 #include "Spaceship.h"
 #include "Planet.h"
 #include "SolarSystem.h"
+#include "dataLists.h"
 
 #define GREEN Color(0, 200, 0)
 #define WHITE Color(255, 255, 255)
@@ -16,13 +17,7 @@ enum GameState {
     READ
 };
 
-struct dataLists {
-    std::vector<std::string>* names;
-    std::vector<std::string>* rockPlanetSentences;
-    std::vector<std::string>* traits;
-    std::vector<std::string>* people;
-    
-};
+
 
 class Game
 {
@@ -69,9 +64,14 @@ class Game
         int entryPlanetIndex = -1;
 
         std::vector <SolarSystem> systems;
+        std::vector <RadarCircle> r
         std::vector <std::string> baseNames;
         std::vector <std::string> rockPlanetSentences;
+        std::vector <std::string> gasPlanetSentences;
         std::vector <std::string> traits;
         std::vector <std::string> adjectives;
+        std::vector <std::string> nouns;
         std::vector <std::string> people;
+
+        dataLists data;
 };

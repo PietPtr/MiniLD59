@@ -79,6 +79,11 @@ void Game::update()
                 gameState = PLAY;
                 gameStateTime = totalTime;
             }
+            else if (event.key.code == Keyboard::Return && gameState == TUTORIAL)
+            {
+                gameState = PLAY;
+                gameStateTime = totalTime;
+            }
         }
         if (event.type == Event::Resized)
         {
@@ -93,10 +98,11 @@ void Game::update()
     dt = clock.restart();
     totalTime += dt;
 
-    if (radar)
-        dt = seconds(dt.asSeconds() / 5);
-
-    if (gameState == PLAY)
+    if (gameState == TUTORIAL)
+    {
+        tutorialState();
+    }
+    else if (gameState == PLAY)
     {
         playState();
     }
@@ -115,10 +121,17 @@ void Game::update()
     frame++;
 }
 
+void Game::tutorialState()
+{
+    //nothing to do here, move along
+}
+
 void Game::playState()
 {
+    totalPlayStateTime += dt;
+
     //Create systems
-    int renderDistance = 1000;
+    int renderDistance = 2000;
     Vector2f     topLeftVisible(view.getCenter().x - windowWidth / 2 - renderDistance, view.getCenter().y - windowHeight / 2 - renderDistance);
     Vector2f bottomRightVisible(view.getCenter().x + windowWidth / 2 + renderDistance, view.getCenter().y + windowHeight / 2 + renderDistance);
     Vector2f topLeftSystemTile;
@@ -185,7 +198,7 @@ void Game::playState()
     //testSystem.update(dt);
     for (int i = 0; i < systems.size(); i++)
     {
-        systems.at(i).update(dt);
+        systems.at(i).update(totalPlayStateTime);
     }
 }
 
@@ -196,12 +209,12 @@ void Game::readState()
 
 void Game::draw()
 {
-    window->clear(Color(255, 255, 255));
+    window->clear(Color(0, 6, 34));
 
     //Set the view
     drawBackground();
 
-    if (gameState == PLAY || gameState == READ)
+    if (gameState == PLAY || gameState == READ || gameState == TUTORIAL)
     {
         Vector2f roundedPosition;
         roundedPosition.x = (int)player.getPosition().x;
@@ -224,21 +237,26 @@ void Game::draw()
         hudColor = radar ? GREEN : WHITE;
 
         //Draw all the objects
-        //testSystem.draw(window, &myTextureAtlas);
         for (int i = 0; i < systems.size(); i++)
         {
             systems.at(i).draw(window, useTexture, hudColor);
         }
         player.draw(window, useTexture, hudColor);
-        //testPlanet.draw(window, &myTextureAtlas);
 
         if (radar)
             drawHUD();
     }
     if (gameState == READ && gameState != PLAY)
     {
-        drawReadState();
+        drawReadState("planet");
     }
+    if (gameState == TUTORIAL)
+    {
+        drawReadState("tutorial");
+    }
+
+    //FPS
+    drawString(window, std::to_string(1 / dt.asSeconds()), Vector2f(player.getPosition().x - windowWidth / 2, player.getPosition().y - windowHeight / 2), &fontTexture, Color(0, 200, 0), 1000);
 
     window->display();
 }
@@ -268,14 +286,17 @@ void Game::drawBackground()
     }
 }
 
-void Game::drawReadState()
+void Game::drawReadState(std::string entry)
 {
-    //draw rectangle
-    //draw text generated from planet
-    //drawString(window, "IN THE BEGINNING, THE UNIVERSE WAS CREATED. THIS HAS MADE A LOT OF PEOPLE VERY ANGRY AND HAS BEEN WIDELY REGARDED AS A BAD MOVE.", player.getPosition(), &fontTexture, Color(0, 200,0),  50);
+    std::string name = "NoNameAssigned";
 
-    std::string name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
-    std::string entry = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getEntry();
+    if (entry == "planet")
+    {
+        entry = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getEntry();
+        name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
+    }
+    else if (entry == "tutorial")
+        entry = "WELCOME TO SPACE.& & CONTROLS:&   -WASD: FLY AROUND&   -ENTER: TOGGLE RADAR&   -APPROACH PLANETS AND PRESS SPACE    TO VIEW INFORMATION ABOUT THEM    WHILE THE RADAR IS ON.& & PRESS ENTER TO START EXPLORING.";
 
     Vector2f maxEntrySize(281, 394);
 
@@ -312,7 +333,7 @@ void Game::drawReadState()
             stringToBeDrawn += entry[i];
         }
 
-        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 36);
+        drawString(window, stringToBeDrawn, textPos, &fontTexture, Color(0, 200, 0), 34);
     }
 }
 
@@ -374,7 +395,7 @@ void Game::drawHUD()
     radarRadius = radarRadius > maxRadius ? 0 : radarRadius + 4;
 
     //planet guide entry popup
-    entryPopupPos = Vector2f(2 ^ 32, 0);
+    entryPopupPos = Vector2f(65536, 0);
     for (int j = 0; j < systems.size(); j++)
     {
         std::vector<Planet>* planets = systems.at(j).getPlanets();

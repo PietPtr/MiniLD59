@@ -21,9 +21,9 @@ Planet::Planet(float _circulationSpeed, float _radius, PlanetName _planetName, d
     entry = generatePlanetEntry();
 }
 
-void Planet::update(Time dt)
+void Planet::update(Time totalTime)
 {
-    circulationPosition += circulationSpeed * dt.asSeconds();
+    circulationPosition = circulationSpeed * totalTime.asSeconds();
 }
 
 void Planet::draw(RenderWindow* window, Texture* texture, Color color)
@@ -78,7 +78,6 @@ std::string Planet::generatePlanetEntry()
 
     std::string variable;
     bool recordVariable = false;
-    //bool addLetterFromBase = true;
 
     for (int i = 0; i < base.length(); i++)
     {
@@ -87,7 +86,6 @@ std::string Planet::generatePlanetEntry()
         if (base[i] == ' ' || base[i] == ',' || base[i] == '.')
         {
             recordVariable = false;
-            std::cout << "'" << variable << "'\n";
 
             if (variable == "$NAME")
                 entry += name;

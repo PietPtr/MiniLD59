@@ -11,8 +11,10 @@
 using namespace sf;
 
 int randint(int low, int high, int seed);
+int randint(int low, int high);
 
 enum GameState {
+    TUTORIAL,
     PLAY,
     READ
 };
@@ -24,6 +26,7 @@ class Game
     public:
         Game(RenderWindow* window);
         void update();
+        void tutorialState();
         void playState();
         void readState();
 
@@ -31,7 +34,7 @@ class Game
         void drawText();
         void drawBackground();
         void drawHUD();
-        void drawReadState();
+        void drawReadState(std::string entry);
         void drawTag(std::string text, Vector2f position, Color color);
 
         void loadTextures();
@@ -49,16 +52,17 @@ class Game
         int frame = 0;
         int windowWidth = 1280;
         int windowHeight = 720;
-        Spaceship player {PLAYER, Vector2f(-1024, -1800), 400.0f};
+        Spaceship player {PLAYER, Vector2f(randint(-1024, 1024), randint(-1024, 1024)), 400.0f};
         Clock clock;
         Time dt;
         Time totalTime;
-        Time gameStateTime; //Time at which the new gamestate started
+        Time gameStateTime; //Time when the new gamestate started
+        Time totalPlayStateTime;
         View view;
         bool radar = false;
         int radarRadius = 0;
         Color hudColor = radar ? GREEN : WHITE;
-        GameState gameState = PLAY;
+        GameState gameState = TUTORIAL;
         Vector2f entryPopupPos {2 ^ 32, 0};
         int entrySystemIndex = -1;
         int entryPlanetIndex = -1;
