@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include "Spaceship.h"
 #include "Planet.h"
@@ -25,6 +26,8 @@ class Game
 {
     public:
         Game(RenderWindow* window);
+        void initialize();
+
         void update();
         void tutorialState();
         void playState();
@@ -38,6 +41,7 @@ class Game
         void drawTag(std::string text, Vector2f position, Color color);
 
         void loadTextures();
+        void loadMusic();
         void loadTextFile(std::string filename, std::vector<std::string>* outputList);
 
         float getDistance(Vector2f point1, Vector2f point2);
@@ -45,10 +49,14 @@ class Game
     protected:
     private:
         RenderWindow* window = nullptr;
+
         Texture myTextureAtlas;
         Texture someonesTextureAtlas;
         Texture* useTexture = &myTextureAtlas;
         Texture fontTexture;
+
+        Music backgroundMusic;
+
         int frame = 0;
         int windowWidth = 1280;
         int windowHeight = 720;

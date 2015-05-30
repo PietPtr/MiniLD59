@@ -14,6 +14,8 @@ int main()
 
     Game game(&window);
 
+    game.initialize();
+
     while (window.isOpen())
     {
         game.update();

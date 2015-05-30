@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -17,6 +18,7 @@ Game::Game(RenderWindow* _window)
 {
     window = _window;
     loadTextures();
+    loadMusic();
 
     loadTextFile("text/names.txt", &baseNames);
     loadTextFile("text/rockPlanets.txt", &rockPlanetSentences);
@@ -34,7 +36,11 @@ Game::Game(RenderWindow* _window)
     data.nouns = &nouns;
     data.people = &people;
     //myTextureAtlas.setSmooth(true);
+
+    backgroundMusic.play();
 }
+
+void Game::initialize()
 
 void Game::update()
 {
@@ -288,10 +294,13 @@ void Game::drawBackground()
 
 void Game::drawReadState(std::string entry)
 {
-    std::string name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
+    std::string name = "NoNameAssigned";
 
     if (entry == "planet")
+    {
         entry = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getEntry();
+        name = systems.at(entrySystemIndex).getPlanets()->at(entryPlanetIndex).getName();
+    }
     else if (entry == "tutorial")
         entry = "WELCOME TO SPACE.& & CONTROLS:&   -WASD: FLY AROUND&   -ENTER: TOGGLE RADAR&   -APPROACH PLANETS AND PRESS SPACE    TO VIEW INFORMATION ABOUT THEM    WHILE THE RADAR IS ON.& & PRESS ENTER TO START EXPLORING.";
 
@@ -422,6 +431,12 @@ void Game::loadTextures()
     if (!someonesTextureAtlas.loadFromFile("replaceThis.png"))
         window->close();
     if (!fontTexture.loadFromFile("font.png"))
+        window->close();
+}
+
+void Game::loadMusic()
+{
+    if (!backgroundMusic.openFromFile("Launchpad.mp3"))
         window->close();
 }
 

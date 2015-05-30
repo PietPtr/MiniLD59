@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -17,6 +18,7 @@ Game::Game(RenderWindow* _window)
 {
     window = _window;
     loadTextures();
+    loadMusic();
 
     loadTextFile("text/names.txt", &baseNames);
     loadTextFile("text/rockPlanets.txt", &rockPlanetSentences);
@@ -34,6 +36,11 @@ Game::Game(RenderWindow* _window)
     data.nouns = &nouns;
     data.people = &people;
     //myTextureAtlas.setSmooth(true);
+}
+
+void Game::initialize()
+{
+    backgroundMusic.play();
 }
 
 void Game::update()
@@ -256,7 +263,7 @@ void Game::draw()
     }
 
     //FPS
-    drawString(window, std::to_string(1 / dt.asSeconds()), Vector2f(player.getPosition().x - windowWidth / 2, player.getPosition().y - windowHeight / 2), &fontTexture, Color(0, 200, 0), 1000);
+    //drawString(window, std::to_string(1 / dt.asSeconds()), Vector2f(player.getPosition().x - windowWidth / 2, player.getPosition().y - windowHeight / 2), &fontTexture, Color(0, 200, 0), 1000);
 
     window->display();
 }
@@ -425,6 +432,12 @@ void Game::loadTextures()
     if (!someonesTextureAtlas.loadFromFile("replaceThis.png"))
         window->close();
     if (!fontTexture.loadFromFile("font.png"))
+        window->close();
+}
+
+void Game::loadMusic()
+{
+    if (!backgroundMusic.openFromFile("Launchpad.ogg"))
         window->close();
 }
 
